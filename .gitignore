@@ -8,6 +8,8 @@
 /obj
 /wwwroot/*
 /bin
+/.editorconfig
+/.vscode
 
 # dependencies
 /node_modules
