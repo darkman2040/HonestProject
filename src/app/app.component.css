@@ -29,3 +29,10 @@
        `<body>` to be our scrolling element for mobile layouts. */
     flex: 1 0 auto;
   }
+
+  .chart-container {
+    position: relative;
+    margin: auto;
+    height: 40vh;
+    width: 40vw;
+  }

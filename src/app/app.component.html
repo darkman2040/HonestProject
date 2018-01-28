@@ -19,12 +19,23 @@
         <mat-card-title>Weekly time used</mat-card-title>
         <mat-card-subtitle>Displays the time spent during the week so far</mat-card-subtitle>
         <mat-card-content>
-          <mat-list>
-            <mat-list-item>Win 10 nonsense: 10%</mat-list-item>
-            <mat-list-item>Word Converter: 30%</mat-list-item>
-            <mat-list-item>Management induced delays: 20%</mat-list-item>
-            <mat-list-item>Bill Backs: 40%</mat-list-item>
-          </mat-list>
+            <mat-grid-list cols="2" rowHeight="2:1">
+                <mat-grid-tile>
+                    <mat-list>
+                        <mat-list-item>Win 10 nonsense: 10%</mat-list-item>
+                        <mat-list-item>Word Converter: 30%</mat-list-item>
+                        <mat-list-item>Management induced delays: 20%</mat-list-item>
+                        <mat-list-item>Bill Backs: 40%</mat-list-item>
+                      </mat-list>
+                </mat-grid-tile>
+                <mat-grid-tile><div class="chart-container">
+                    <canvas baseChart
+                            [data]="pieChartData"
+                            [labels]="pieChartLabels"
+                            [chartType]="pieChartType"></canvas>
+                  </div></mat-grid-tile>
+              </mat-grid-list>
+          
         </mat-card-content>
       </mat-card>
       <mat-divider></mat-divider>

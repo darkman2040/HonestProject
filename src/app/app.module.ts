@@ -44,6 +44,8 @@ import {
 import {HttpClientModule} from '@angular/common/http';
 import {CdkTableModule} from '@angular/cdk/table';
 
+import { ChartsModule } from 'ng2-charts/ng2-charts';
+
 @NgModule({
   exports: [
     CdkTableModule,
@@ -94,7 +96,8 @@ export class MaterialModule {}
     HttpModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
