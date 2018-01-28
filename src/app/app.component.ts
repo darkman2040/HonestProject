@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   title = 'Honest Project';
   mobileQuery: MediaQueryList;
 
-  fillerNav = Array(50).fill(0).map((_, i) => `Nav Item ${i + 1}`);
+  fillerNav = [`Dashboard`, `Timesheet`];
 
   fillerContent = Array(50).fill(0).map(() =>
       `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut

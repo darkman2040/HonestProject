@@ -80,7 +80,7 @@ import {CdkTableModule} from '@angular/cdk/table';
     MatTooltipModule,
   ]
 })
-export class DemoMaterialModule {}
+export class MaterialModule {}
 
 
 @NgModule({
@@ -94,7 +94,7 @@ export class DemoMaterialModule {}
     HttpModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    DemoMaterialModule
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
