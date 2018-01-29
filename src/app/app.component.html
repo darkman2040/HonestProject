@@ -2,9 +2,11 @@
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <h1 class="example-app-name">{{title}}</h1>
+    <span class="example-spacer"></span>
+    <button mat-raised-button color="primary">Add timesheet</button>
   </mat-toolbar>
 
-  <mat-sidenav-container class="example-sidenav-container"
+  <mat-sidenav-container 
                          [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
@@ -14,36 +16,43 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <h1>Developer View</h1>
-      <mat-card>
-        <mat-card-title>Weekly time used</mat-card-title>
-        <mat-card-subtitle>Displays the time spent during the week so far</mat-card-subtitle>
-        <mat-card-content>
-            <mat-grid-list cols="2" rowHeight="2:1">
-                <mat-grid-tile>
-                    <mat-list>
-                        <mat-list-item>Win 10 nonsense: 10%</mat-list-item>
-                        <mat-list-item>Word Converter: 30%</mat-list-item>
-                        <mat-list-item>Management induced delays: 20%</mat-list-item>
-                        <mat-list-item>Bill Backs: 40%</mat-list-item>
-                      </mat-list>
-                </mat-grid-tile>
-                <mat-grid-tile><div class="chart-container">
-                    <canvas baseChart
-                            [data]="pieChartData"
-                            [labels]="pieChartLabels"
-                            [chartType]="pieChartType"></canvas>
-                  </div></mat-grid-tile>
-              </mat-grid-list>
-          
-        </mat-card-content>
-      </mat-card>
-      <mat-divider></mat-divider>
-      <mat-card>
-          <mat-card-title>Monthly time spent</mat-card-title>
-          <mat-card-subtitle>Time spent during the month</mat-card-subtitle>
-          <mat-card-content>Some Content</mat-card-content>
-        </mat-card>
+      <h1>Developer View</h1>   
+      <h2>Last week:</h2>   
+      <mat-grid-list rowHeight="200px" cols="3">
+        <mat-grid-tile >
+            <mat-list>
+                <mat-list-item>Win 10 nonsense: 10%</mat-list-item>
+                <mat-list-item>Word Converter: 30%</mat-list-item>
+                <mat-list-item>Management induced delays: 20%</mat-list-item>
+                <mat-list-item>Bill Backs: 40%</mat-list-item>
+              </mat-list>
+        </mat-grid-tile>
+        <mat-grid-tile colSpan="2"><div class="chart-container">
+            <canvas baseChart
+                    [data]="pieChartData"
+                    [labels]="pieChartLabels"
+                    [chartType]="pieChartType"
+                    [legend]="false"></canvas>
+          </div></mat-grid-tile>
+      </mat-grid-list>
+      <h3>Last month:</h3>
+      <mat-grid-list rowHeight="200px" cols="3">
+        <mat-grid-tile >
+            <mat-list>
+                <mat-list-item>Win 10 nonsense: 10%</mat-list-item>
+                <mat-list-item>Word Converter: 30%</mat-list-item>
+                <mat-list-item>Management induced delays: 20%</mat-list-item>
+                <mat-list-item>Bill Backs: 40%</mat-list-item>
+              </mat-list>
+        </mat-grid-tile>
+        <mat-grid-tile><div class="chart-container">
+            <canvas baseChart
+                    [data]="pieChartData"
+                    [labels]="pieChartLabels"
+                    [chartType]="pieChartType"
+                    [legend]="false"></canvas>
+          </div></mat-grid-tile>
+      </mat-grid-list>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

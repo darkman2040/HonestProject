@@ -33,6 +33,14 @@
   .chart-container {
     position: relative;
     margin: auto;
-    height: 40vh;
-    width: 40vw;
+    height: 400px;
+    width: 400px;
+  }
+
+  .reportCard {
+    height: 300px;
+  }
+
+  .example-spacer {
+    flex: 1 1 auto;
   }
