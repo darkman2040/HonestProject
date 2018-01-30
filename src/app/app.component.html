@@ -6,7 +6,7 @@
     <button mat-raised-button color="primary">Add timesheet</button>
   </mat-toolbar>
 
-  <mat-sidenav-container 
+  <mat-sidenav-container class="example-sidenav-container"
                          [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
@@ -16,7 +16,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <app-dev-dashboard></app-dev-dashboard>
+      <app-dashboard></app-dashboard>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

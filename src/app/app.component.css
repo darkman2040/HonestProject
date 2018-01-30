@@ -30,13 +30,6 @@
     flex: 1 0 auto;
   }
 
-  .chart-container {
-    position: relative;
-    margin: auto;
-    height: 400px;
-    width: 400px;
-  }
-
   .reportCard {
     height: 300px;
   }

@@ -15,14 +15,16 @@ import {CdkTableModule} from '@angular/cdk/table';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 import {UserTimeWidgetComponent} from './widgets/user-time-widget/user-time-widget.component';
-import { DevDashboardComponent } from './screens/dev-dashboard/dev-dashboard.component';
+import { DashboardComponent } from './screens/dashboard/dashboard.component';
+import { ProjectViewerComponent } from './screens/project-viewer/project-viewer.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     UserTimeWidgetComponent,
-    DevDashboardComponent
+    DashboardComponent,
+    ProjectViewerComponent
   ],
   imports: [
     CdkTableModule,
