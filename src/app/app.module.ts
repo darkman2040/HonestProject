@@ -16,7 +16,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 import {UserTimeWidgetComponent} from './widgets/user-time-widget/user-time-widget.component';
 import { DashboardComponent } from './screens/dashboard/dashboard.component';
-import { ProjectViewerComponent } from './screens/project-viewer/project-viewer.component';
+import { ProjectViewerComponent } from './widgets/project-viewer/project-viewer.component';
 
 
 @NgModule({
