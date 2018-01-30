@@ -1,0 +1,23 @@
+<mat-card>
+    <mat-card-title>Time report ({{days}} days)</mat-card-title>
+    <mat-card-subtitle>Your time spent the last {{days}} work days</mat-card-subtitle>
+    <mat-card-content>
+        <mat-grid-list rowHeight="200px" cols="3">
+            <mat-grid-tile >
+                <mat-list>
+                    <mat-list-item>Win 10 nonsense: 10% {{test}}</mat-list-item>
+                    <mat-list-item>Word Converter: 30%</mat-list-item>
+                    <mat-list-item>Management induced delays: 20%</mat-list-item>
+                    <mat-list-item>Bill Backs: 40%</mat-list-item>
+                  </mat-list>
+            </mat-grid-tile>
+            <mat-grid-tile colSpan="2"><div class="chart-container">
+                <canvas baseChart
+                        [data]="pieChartData"
+                        [labels]="pieChartLabels"
+                        [chartType]="pieChartType"
+                        [legend]="false"></canvas>
+              </div></mat-grid-tile>
+          </mat-grid-list>
+    </mat-card-content>
+</mat-card>
