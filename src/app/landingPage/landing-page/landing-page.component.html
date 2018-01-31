@@ -1,0 +1,23 @@
+<div class="landing-page-container">
+  <mat-toolbar color="primary" class="landing-page-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1 class="landing-page-app-name">{{title}}</h1>
+    <span class="landing-page-spacer"></span>
+    <button mat-raised-button color="primary">Add timesheet</button>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="landing-page-sidenav-container"
+                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <mat-nav-list>
+        <a mat-list-item routerLink=".">Dashboard<mat-divider></mat-divider></a>
+        <a mat-list-item routerLink=".">Timesheet<mat-divider></mat-divider></a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <app-dashboard></app-dashboard>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
