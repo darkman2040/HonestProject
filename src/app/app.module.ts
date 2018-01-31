@@ -16,21 +16,11 @@ import { LandingPageComponent } from './landingPage/landing-page/landing-page.co
 import { LoginPageComponent } from './login/loginPage/login-page/login-page.component';
 
 import { RouterModule, Routes } from '@angular/router';
-import {ScreensModule}from './screens/screens.module';
-
-import { DashboardComponent }    from './screens/dashboard/dashboard.component';
-import { TimeSheetComponent }  from './screens/timeSheet/time-sheet.component';
-
-import {UserTimeWidgetComponent} from './widgets/user-time-widget/user-time-widget.component';
-import { ProjectViewerComponent } from './widgets/project-viewer/project-viewer.component';
-
-import { ChartsModule } from 'ng2-charts/ng2-charts';
+import {LandingPageModule}from './landingPage/landing-page.module';
 
 const appRoutes: Routes = [
-  { path: 'landing', component: LandingPageComponent },
   { path: 'login', component: LoginPageComponent },
- 
-  { path: '',   redirectTo: '/landing', pathMatch: 'full' }
+  { path: '',   redirectTo: '/landing-page', pathMatch: 'full' }
 ];
 
 
@@ -39,10 +29,6 @@ const appRoutes: Routes = [
     AppComponent,
     LandingPageComponent,
     LoginPageComponent,
-    DashboardComponent,
-    TimeSheetComponent,
-    UserTimeWidgetComponent,
-    ProjectViewerComponent
   ],
   imports: [ 
     BrowserModule,
@@ -50,8 +36,7 @@ const appRoutes: Routes = [
     HttpModule,
     BrowserAnimationsModule,
     MaterialModule,
-    ScreensModule,
-    ChartsModule,
+    LandingPageModule,
     RouterModule.forRoot(
       appRoutes,
       {enableTracing: true}
