@@ -1,35 +1,48 @@
-<div>
-  <h1 class="time-sheet-name">Time Sheet for 1/31/2018</h1>
-  <mat-card>
-      <mat-grid-list cols="2" rowHeight="2:1">
-    <mat-grid-tile>
-      
-  <div class="time-sheet-container">
-      <mat-form-field>
-          <input matInput placeholder="Input" required>
-        </mat-form-field> 
-        <mat-form-field>
-            <mat-select placeholder="Select">
-              <mat-option value="option">Option</mat-option>
-            </mat-select>
-          </mat-form-field>
+<div class="time-sheet-container">
+  <mat-sidenav-container class="time-sheet-sidenav-container">
+    <mat-sidenav mode="side" #timeNav opened position="end" >
+      <h3 class="time-sheet-sidenav-label">Add entry:</h3>
+      <div class="time-sheet-sidenav-form-container">
+      <mat-form-field class="time-sheet-sidenav-input">
+      <mat-select placeholder="Choose project">
+          <mat-option>None</mat-option>
+          <mat-option value="Adv Search">Adv Search</mat-option>
+          <mat-option value="Bill Backs">Bill Backs</mat-option>
+          <mat-option value="Win 10">Win 10</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="time-sheet-sidenav-input" hintLabel="Time in hours. ex. 3.5">
+        <input matInput placeholder="Enter Time" required>
+      </mat-form-field>
+      <button mat-button>Enter</button>
+    </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-card>
+         
+            <mat-card-title>Time sheet for 2/1/2018 </mat-card-title>
+            <mat-card-subtitle>The list of time entries for the day</mat-card-subtitle>
+            
+            <mat-card-content>
+                <mat-table #table [dataSource]="dataSource">
         
-  </div>  
-</mat-grid-tile>
-<mat-grid-tile>
-    <div class="time-sheet-container">
-        <mat-form-field>
-            <input matInput placeholder="Input" required>
-          </mat-form-field> 
-          <mat-form-field>
-              <mat-select placeholder="Select">
-                <mat-option value="option">Option</mat-option>
-              </mat-select>
-            </mat-form-field>
-          
-    </div>  
-</mat-grid-tile>
-  </mat-grid-list>
-</mat-card>
-
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                      <mat-cell *matCellDef="let entry"> {{entry.name}} </mat-cell>
+                    </ng-container>
+                
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="timeInHours">
+                      <mat-header-cell *matHeaderCellDef> Hours </mat-header-cell>
+                      <mat-cell *matCellDef="let entry"> {{entry.timeInHours}} </mat-cell>
+                    </ng-container>
+        
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                  </mat-table>
+            </mat-card-content>
+          </mat-card>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
