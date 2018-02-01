@@ -1,0 +1,9 @@
+.time-sheet-name {
+    margin-left: 8px;
+  }
+
+  .time-sheet-container {
+    display: flex;
+    flex-direction: row;
+    margin-left: 8px;
+  }
