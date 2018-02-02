@@ -2,22 +2,28 @@
   <mat-sidenav-container class="time-sheet-sidenav-container">
     <mat-sidenav mode="side" #timeNav opened position="end" >
       <h3 class="time-sheet-sidenav-label">Add entry:</h3>
+      <form #entryForm="ngForm" (submit)="onSubmit(); entryForm.resetForm(newEntry)">
       <div class="time-sheet-sidenav-form-container">
+     
       <mat-form-field class="time-sheet-sidenav-input">
-      <mat-select placeholder="Choose project">
+      <mat-select placeholder="Choose project" required [(ngModel)]="newEntry.name" name="name">
           <mat-option>None</mat-option>
-          <mat-option value="Adv Search">Adv Search</mat-option>
-          <mat-option value="Bill Backs">Bill Backs</mat-option>
-          <mat-option value="Win 10">Win 10</mat-option>
+          <mat-option *ngFor="let project of projects" [value]="project">{{project}}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="time-sheet-sidenav-input" hintLabel="Time in hours. ex. 3.5">
-        <input matInput placeholder="Enter Time" required>
+        <input matInput [(ngModel)]="newEntry.timeInString" name="project" placeholder="Enter Time" required>
       </mat-form-field>
-      <button mat-button>Enter</button>
+      <button class="time-sheet-entry-button" mat-button type="submit">Enter</button>
     </div>
+    </form>
+    
     </mat-sidenav>
     <mat-sidenav-content>
+      <div class="time-sheet-top-button">
+        <span class="time-sheet-spacer"></span>
+        <button mat-button> Add entry</button>
+      </div>
         <mat-card>
          
             <mat-card-title>Time sheet for 2/1/2018 </mat-card-title>

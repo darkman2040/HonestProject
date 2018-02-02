@@ -17,6 +17,11 @@
     flex-direction: column;
   }
 
+  .time-sheet-top-button {
+    display: flex;
+    flex-direction: row;
+  }
+
   .time-sheet-sidenav-container {
     flex: 1;
   }
@@ -29,4 +34,8 @@
 
   .time-sheet-spacer {
     flex: 1 1 auto;
+  }
+
+  .time-sheet-entry-button{
+    margin-top: 8px;
   }
