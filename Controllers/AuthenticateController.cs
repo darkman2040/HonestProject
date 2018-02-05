@@ -11,9 +11,12 @@ namespace HonestProject.Controllers
     {
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public AuthenticateRequest Get()
         {
-            return new string[] { "value1", "value2" };
+            AuthenticateRequest request = new AuthenticateRequest();
+            request.username = "Test";
+            request.password = "Test";
+            return request;
         }
 
         // GET api/values/5
@@ -25,9 +28,12 @@ namespace HonestProject.Controllers
 
         // POST api/authenticate
         [HttpPost]
-        public bool Post([FromBody]string userName, string password)
+        public AuthenticateResponse Post([FromBody] AuthenticateRequest request)
         {
-            return true;
+            AuthenticateResponse response = new AuthenticateResponse();
+            response.token = "blah";
+            response.username = request.username;
+            return response;
         }
 
         // PUT api/values/5

@@ -19,6 +19,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {LandingPageModule}from './landingPage/landing-page.module';
 
 import {AuthGuard} from './login/_guards/auth.guard'
+import {AuthenticationService} from './login/_services/authentication.service'
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -44,7 +45,8 @@ const appRoutes: Routes = [
       {enableTracing: true}
     )
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard,
+    AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
