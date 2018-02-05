@@ -24,8 +24,7 @@ const screensRoutes: Routes = [
       component: TimeSheetComponent
     }
     
-  ],
-  canActivate: [AuthGuard]
+  ]
   }
 ];
 
