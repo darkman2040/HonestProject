@@ -1,0 +1,54 @@
+<div class="time-sheet-container">
+  <mat-sidenav-container class="time-sheet-sidenav-container">
+    <mat-sidenav mode="side" #timeNav opened position="end" >
+      <h3 class="time-sheet-sidenav-label">Add entry:</h3>
+      <form #entryForm="ngForm" (submit)="onSubmit(); entryForm.resetForm(newEntry)">
+      <div class="time-sheet-sidenav-form-container">
+     
+      <mat-form-field class="time-sheet-sidenav-input">
+      <mat-select placeholder="Choose project" required [(ngModel)]="newEntry.name" name="name">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let project of projects" [value]="project">{{project}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="time-sheet-sidenav-input" hintLabel="Time in hours. ex. 3.5">
+        <input matInput [(ngModel)]="newEntry.timeInString" name="project" placeholder="Enter Time" required>
+      </mat-form-field>
+      <button class="time-sheet-entry-button" mat-button type="submit">Enter</button>
+    </div>
+    </form>
+    
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="time-sheet-top-button">
+        <span class="time-sheet-spacer"></span>
+        <button mat-button> Add entry</button>
+      </div>
+        <mat-card>
+         
+            <mat-card-title>Time sheet for 2/1/2018 </mat-card-title>
+            <mat-card-subtitle>The list of time entries for the day</mat-card-subtitle>
+            
+            <mat-card-content>
+                <mat-table #table [dataSource]="dataSource">
+        
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                      <mat-cell *matCellDef="let entry"> {{entry.name}} </mat-cell>
+                    </ng-container>
+                
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="timeInHours">
+                      <mat-header-cell *matHeaderCellDef> Hours </mat-header-cell>
+                      <mat-cell *matCellDef="let entry"> {{entry.timeInHours}} </mat-cell>
+                    </ng-container>
+        
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                  </mat-table>
+            </mat-card-content>
+          </mat-card>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

@@ -1,19 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http'
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
+import {MediaMatcher} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  title = 'app';
-
-  constructor(private _httpService: Http) { }
-   apiValues: string[] = [];
-   ngOnInit() {
-      this._httpService.get('/api/values').subscribe(values => {
-         this.apiValues = values.json() as string[];
-      });
-   }
+export class AppComponent{
+  
 }
