@@ -5,6 +5,8 @@ import { LandingPageComponent }from './landing-page/landing-page.component';
 import { DashboardComponent }    from '../screens/dashboard/dashboard.component';
 import {TimeSheetComponent} from '../screens/time-sheet/time-sheet.component';
 
+import {AuthGuard} from '../login/_guards/auth.guard'
+
 const screensRoutes: Routes = [
   { path: 'landing-page',  
   component: LandingPageComponent, 
@@ -22,7 +24,8 @@ const screensRoutes: Routes = [
       component: TimeSheetComponent
     }
     
-  ]
+  ],
+  canActivate: [AuthGuard]
   }
 ];
 
