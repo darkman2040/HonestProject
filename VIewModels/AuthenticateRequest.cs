@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HonestProject.Controllers
+namespace HonestProject.ViewModels
 {
   public class AuthenticateRequest {
 
