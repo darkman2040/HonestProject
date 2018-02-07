@@ -18,6 +18,11 @@ namespace HonestProject.Repositories {
             this.ValidSubmission = true;
         }
 
+        public void ValidationFailed()
+        {
+            this.ValidSubmission = false;
+        }
+
         public void SetError(string errorMessage)
         {
             this.ErrorDetected = true;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HonestProject.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HonestProject.Controllers
@@ -9,17 +10,30 @@ namespace HonestProject.Controllers
     [Route("api/[controller]")]
     public class SiteController : Controller
     {
+        private ISiteRepository siteRepository;
+
+        public SiteController(ISiteRepository siteRepo)
+        {
+            this.siteRepository = siteRepo;
+        }
 
         [HttpGet("{id}")]
-        public ViewModels.Site Get(int id)
+        public IActionResult Get(Guid id)
         {
             return null;
         }
 
         [HttpPost]
-        public ViewModels.Site Post([FromBody] ViewModels.Site newSite)
+        public IActionResult Post([FromBody] ViewModels.Site site)
         {
-            return null;
+            ViewModels.Site returnSite = this.siteRepository.Save(site);
+
+            if(!siteRepository.ValidSubmission)
+            {
+                return BadRequest(site);
+            }
+
+            return new ObjectResult(returnSite);
         }
     }
 }
