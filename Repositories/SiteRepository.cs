@@ -16,11 +16,11 @@ namespace HonestProject.Repositories
         {
             this.context = context;
         }
-        public ViewModels.Site GetSite(int id)
+        public ViewModels.Site GetSite(Guid id)
         {
             try
             {
-                DataModels.Site site = this.context.Site.Where(f => f.ID == id).FirstOrDefault();
+                DataModels.Site site = this.context.Site.Where(f => f.PublicIdentifier == id).FirstOrDefault();
                 if (site == null)
                 {
                     base.ValidationFailed();
@@ -58,16 +58,9 @@ namespace HonestProject.Repositories
                 DataModels.Site dbSite = new DataModels.Site();
                 dbSite.HoursPerDay = site.HoursPerDay;
                 dbSite.IncludeWeekends = site.IncludeWeekends;
-                dbSite.Name = site.Name;
+                dbSite.Name = site.Name; 
                 dbSite.PublicIdentifier = Guid.NewGuid();
-                if(site.ID == null)
-                {
-                    this.context.Site.Add(dbSite);
-                }
-                else
-                {
-                    this.context.Site.Update(dbSite);
-                }
+                this.context.Site.Add(dbSite);
                 this.context.SaveChanges();
                 site.ID = dbSite.PublicIdentifier;
                 return site;

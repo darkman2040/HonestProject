@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HonestProject.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HonestProject.Controllers
@@ -20,7 +21,19 @@ namespace HonestProject.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
-            return null;
+            ViewModels.Site getSite = siteRepository.GetSite(id);
+
+            if(!siteRepository.ValidSubmission)
+            {
+                return NotFound();
+            }
+
+            if(siteRepository.ErrorDetected)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError); 
+            }
+
+            return new ObjectResult(getSite);
         }
 
         [HttpPost]
@@ -31,6 +44,11 @@ namespace HonestProject.Controllers
             if(!siteRepository.ValidSubmission)
             {
                 return BadRequest(site);
+            }
+
+            if(siteRepository.ErrorDetected)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
             return new ObjectResult(returnSite);
