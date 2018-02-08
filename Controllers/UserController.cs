@@ -18,6 +18,23 @@ namespace HonestProject.Controllers
             userRepository = repository;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            ViewModels.User user = userRepository.GetUser(id);
+            if(!userRepository.ValidSubmission)
+            {
+                return BadRequest(id);
+            }
+
+            if(!userRepository.ErrorDetected)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return new ObjectResult(user);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody]ViewModels.User user)
         {

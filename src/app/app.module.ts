@@ -9,7 +9,7 @@ import { HttpModule } from '@angular/http';
 
 import {MaterialModule} from './angularmaterials.module'
 
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule }    from '@angular/common/http';
 
 
 import { LandingPageComponent } from './landingPage/landing-page/landing-page.component';
@@ -20,6 +20,7 @@ import {LandingPageModule}from './landingPage/landing-page.module';
 
 import {AuthGuard} from './login/_guards/auth.guard'
 import {AuthenticationService} from './login/_services/authentication.service'
+import { UserService} from './landingPage/_services/userService'
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -36,7 +37,7 @@ const appRoutes: Routes = [
   imports: [ 
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
     LandingPageModule,
@@ -46,7 +47,8 @@ const appRoutes: Routes = [
     )
   ],
   providers: [AuthGuard,
-    AuthenticationService],
+    AuthenticationService,
+    UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

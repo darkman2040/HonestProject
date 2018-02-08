@@ -6,7 +6,7 @@ namespace HonestProject.ViewModels
 {
   public class AuthenticateResponse {
 
-      public string username {get; set;}
+      public Guid userId {get; set;}
       public string token {get; set;}
 
   }

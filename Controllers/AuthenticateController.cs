@@ -32,7 +32,7 @@ namespace HonestProject.Controllers
                 return new ObjectResult(response);
             }
             response.token = "blah";
-            response.username = user.EmailAddress;
+            response.userId = user.PublicIdentifier;
             return new ObjectResult(response);
         }
 

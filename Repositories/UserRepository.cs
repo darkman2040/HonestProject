@@ -19,7 +19,27 @@ namespace HonestProject.Repositories
 
         public ViewModels.User GetUser(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                DataModels.User dbUser = this.context.User.Where(x => x.PublicIdentifier == id).FirstOrDefault();
+                if(dbUser == null)
+                {
+                    this.ValidationFailed();
+                }
+
+                this.ValidationPassed();
+                ViewModels.User user = new ViewModels.User();
+                user.EmailAddress = dbUser.EmailAddress;
+                user.FirstName = dbUser.FirstName;
+                user.LastName = dbUser.LastName;
+                user.UserSite = dbUser.Site.PublicIdentifier;
+                return user;
+            }
+            catch(Exception e)
+            {
+                this.SetError(e.Message);
+                return null;
+            }
         }
 
         public ViewModels.User Save(ViewModels.User user)
