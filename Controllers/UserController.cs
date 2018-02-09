@@ -5,19 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HonestProject.Repositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HonestProject.Controllers
 {
+   
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-
         IUserRepository userRepository;
         public UserController(IUserRepository repository)
         {
             userRepository = repository;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
@@ -27,7 +29,7 @@ namespace HonestProject.Controllers
                 return BadRequest(id);
             }
 
-            if(!userRepository.ErrorDetected)
+            if(userRepository.ErrorDetected)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

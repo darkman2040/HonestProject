@@ -12,6 +12,7 @@ export class LoginPageComponent implements OnInit {
   loading = false;
   username: string;
   password: string;
+  hide: boolean = true;
 
   constructor(
     private router: Router,

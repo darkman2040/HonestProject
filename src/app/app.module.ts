@@ -22,6 +22,9 @@ import {AuthGuard} from './login/_guards/auth.guard'
 import {AuthenticationService} from './login/_services/authentication.service'
 import { UserService} from './landingPage/_services/userService'
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './login/_interceptors/authenticationInterceptor';
+
 const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: '',   redirectTo: '/landing-page', pathMatch: 'full' }
@@ -48,7 +51,12 @@ const appRoutes: Routes = [
   ],
   providers: [AuthGuard,
     AuthenticationService,
-    UserService],
+    UserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -6,6 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using HonestProject.ViewModels;
 using HonestProject.DataModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace HonestProject.Controllers
 {
@@ -14,24 +19,36 @@ namespace HonestProject.Controllers
     {
 
         HonestProjectContext _context;
+        IConfiguration _configuration;
 
-        public AuthenticateController(HonestProjectContext context)
+        public AuthenticateController(HonestProjectContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // POST api/authenticate
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Post([FromBody] AuthenticateRequest request)
         {
             AuthenticateResponse response = new AuthenticateResponse();
             DataModels.User user = _context.User.Where(x => x.EmailAddress == request.username && x.PasswordHash == request.password).FirstOrDefault();
 
-            if(user == null)
+            if (user == null)
             {
                 return new ObjectResult(response);
             }
-            response.token = "blah";
+            var claims = new[] { new Claim(ClaimTypes.Name, request.username) };
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["SecurityKey"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+            issuer: "yourdomain.com",
+            audience: "yourdomain.com",
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(30),
+            signingCredentials: creds);
+            response.token = new JwtSecurityTokenHandler().WriteToken(token);
             response.userId = user.PublicIdentifier;
             return new ObjectResult(response);
         }

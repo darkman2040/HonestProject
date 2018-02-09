@@ -38,6 +38,7 @@ export class LandingPageComponent implements OnInit {
     .subscribe(
       (user: User) => {
         this.user = user;
+        console.log('User:' + JSON.stringify(user));
         this.loading = false;
       });
   }

@@ -12,6 +12,8 @@ using Microsoft.Extensions.Options;
 using HonestProject.DataModels;
 using Microsoft.EntityFrameworkCore;
 using HonestProject.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HonestProject
 {
@@ -27,9 +29,25 @@ namespace HonestProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            ValidIssuer = "yourdomain.com",
+                            ValidAudience = "yourdomain.com",
+                            IssuerSigningKey = new SymmetricSecurityKey(
+                                System.Text.Encoding.UTF8.GetBytes(Configuration["SecurityKey"]))
+                        };
+                    });
+
             services.AddMvc();
 
-            var connection = @"Server=(localdb)\MSSQLLocalDB;Database=HonestProject;Trusted_Connection=True;";
+            var connection = @"Server=COLIN-PC\SQLEXPRESS;Database=HonestProject;Trusted_Connection=True;";
             services.AddDbContext<HonestProjectContext>(options =>
             options.UseSqlServer(connection));
 
@@ -40,16 +58,20 @@ namespace HonestProject
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.Use(async (context, next) => {
-            await next();
-            if (context.Response.StatusCode == 404 &&
-            !Path.HasExtension(context.Request.Path.Value) &&
-            !context.Request.Path.Value.StartsWith("/api/")) {
-            context.Request.Path = "/index.html";
-            await next();
-            }
+            app.UseAuthentication();
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404 &&
+                !Path.HasExtension(context.Request.Path.Value) &&
+                !context.Request.Path.Value.StartsWith("/api/"))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
             });
-            
+
             app.UseMvcWithDefaultRoute();
             app.UseDefaultFiles();
             app.UseStaticFiles();

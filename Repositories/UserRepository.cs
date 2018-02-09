@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using HonestProject.DataModels;
 using HonestProject.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace HonestProject.Repositories
 {
@@ -21,7 +22,7 @@ namespace HonestProject.Repositories
         {
             try
             {
-                DataModels.User dbUser = this.context.User.Where(x => x.PublicIdentifier == id).FirstOrDefault();
+                DataModels.User dbUser = this.context.User.Include(x => x.Site).Where(x => x.PublicIdentifier == id).FirstOrDefault();
                 if(dbUser == null)
                 {
                     this.ValidationFailed();
@@ -29,6 +30,7 @@ namespace HonestProject.Repositories
 
                 this.ValidationPassed();
                 ViewModels.User user = new ViewModels.User();
+                user.ID = dbUser.PublicIdentifier;
                 user.EmailAddress = dbUser.EmailAddress;
                 user.FirstName = dbUser.FirstName;
                 user.LastName = dbUser.LastName;

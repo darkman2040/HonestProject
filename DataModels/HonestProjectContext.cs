@@ -16,5 +16,6 @@ namespace HonestProject.DataModels
         public DbSet<HonestProject.DataModels.Role> Role { get; set; }
         public DbSet<HonestProject.DataModels.Site> Site { get; set; }
         public DbSet<HonestProject.DataModels.Team> Team { get; set; }
+         public DbSet<HonestProject.DataModels.TimeEntry> TimeEntry { get; set; }
     }
 }
