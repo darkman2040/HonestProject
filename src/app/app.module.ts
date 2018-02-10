@@ -13,10 +13,10 @@ import { HttpClientModule }    from '@angular/common/http';
 
 
 import { LandingPageComponent } from './landingPage/landing-page/landing-page.component';
-import { LoginPageComponent } from './login/loginPage/login-page/login-page.component';
 
 import { RouterModule, Routes } from '@angular/router';
 import {LandingPageModule}from './landingPage/landing-page.module';
+import {LoginModule} from './login/login.module'
 
 import {AuthGuard} from './login/_guards/auth.guard'
 import {AuthenticationService} from './login/_services/authentication.service'
@@ -26,7 +26,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './login/_interceptors/authenticationInterceptor';
 
 const appRoutes: Routes = [
-  { path: 'login', component: LoginPageComponent },
   { path: '',   redirectTo: '/landing-page', pathMatch: 'full' }
 ];
 
@@ -35,7 +34,6 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     LandingPageComponent,
-    LoginPageComponent,
   ],
   imports: [ 
     BrowserModule,
@@ -44,6 +42,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     MaterialModule,
     LandingPageModule,
+    LoginModule,
     RouterModule.forRoot(
       appRoutes,
       {enableTracing: true}
