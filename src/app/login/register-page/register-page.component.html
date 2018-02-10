@@ -1,3 +1,27 @@
-<p>
-  register-page works!
-</p>
+<div class="register-content">
+    <div class="register-header">
+        <h3>Please register</h3>
+      </div>
+  <div>
+    <form [formGroup]="registerForm" class="register-body" novalidate (click)="onSubmit()">
+      <mat-form-field>
+        <input matInput placeholder="First name" formControlName="firstName" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Last name" formControlName="lastName" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName="email" required>
+      </mat-form-field> 
+      <mat-form-field>
+        <input matInput placeholder="Password" formControlName="password" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Confirm Password" formControlName="confirmPassword" required>
+      </mat-form-field>
+      <button mat-raised-button [disabled]="loading" color="primary" type="button">Register</button>
+    </form>
+    <p>Form value: {{ registerForm.value | json }}</p>
+    <p>Form status: {{ registerForm.status | json }}</p>
+  </div>
+</div>

@@ -15,7 +15,7 @@ namespace HonestProject.DataModels {
         [StringLength(50)]
         public string LastName {get; set;}
         [Required]
-        [StringLength(50)]
+        [StringLength(100)]
         public string EmailAddress {get; set;}
         [Required]
         public string PasswordHash {get; set;}
