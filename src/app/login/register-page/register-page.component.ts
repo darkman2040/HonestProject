@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import {RegisterUserService}from '../_services/registerUser.service'
+import { UserService } from '../../landingPage/_services/userService';
+
 @Component({
   selector: 'app-register-page',
   templateUrl: './register-page.component.html',
@@ -10,12 +13,15 @@ export class RegisterPageComponent implements OnInit {
 
   loading: boolean = false;
   registerForm: FormGroup;
-  constructor(private fb: FormBuilder) { 
+  singleSiteMode: boolean;
+  constructor(private fb: FormBuilder,
+  private userService: RegisterUserService) { 
     this.createForm();
   }
 
   createForm() {
     this.registerForm = this.fb.group({
+      siteId: ['', [Validators.required, Validators.maxLength(50)]],
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.maxLength(100), Validators.email]],
@@ -25,6 +31,10 @@ export class RegisterPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userService.CheckIfSingleSite()
+    .subscribe(result => {
+      console.log(JSON.stringify(result))
+      this.singleSiteMode = result})
   }
 
   onSubmit() {

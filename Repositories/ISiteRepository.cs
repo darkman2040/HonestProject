@@ -6,5 +6,6 @@ namespace HonestProject.Repositories
     {
         ViewModels.Site Save(HonestProject.ViewModels.RegisterSite site);
         ViewModels.Site GetSite(Guid id);
+        bool CanRegisterSite();
     }
 }

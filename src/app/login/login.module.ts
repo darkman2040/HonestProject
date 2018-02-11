@@ -10,6 +10,8 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { SiteRegisterComponent } from './site-register/site-register.component'
 import { SiteService } from './_services/site.service'
+import {RegisterUserService} from './_services/registerUser.service'
+import {SiteRegisterGuard} from './_guards/siteRegister.guard'
 
 @NgModule({
   imports: [
@@ -25,6 +27,8 @@ import { SiteService } from './_services/site.service'
     RegisterPageComponent,
     SiteRegisterComponent
   ],
-  providers: [SiteService]
+  providers: [SiteService,
+    RegisterUserService,
+    SiteRegisterGuard]
 })
 export class LoginModule { }

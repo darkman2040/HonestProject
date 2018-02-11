@@ -18,6 +18,34 @@ namespace HonestProject.Repositories
             this.context = context;
             this.configuration = config;
         }
+
+        public bool CanRegisterSite()
+        {
+            try
+            {
+                if (this.configuration["SingleSiteMode"].ToLower() == "true")
+                {
+                    if (this.context.Site.Count() > 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false; //Right now only allow singe site mode
+                }
+            }
+            catch (Exception e)
+            {
+                base.SetError(e.Message);
+                return false;
+            }
+        }
+
         public ViewModels.Site GetSite(Guid id)
         {
             try
@@ -43,14 +71,14 @@ namespace HonestProject.Repositories
                 return null;
             }
 
-            
+
         }
 
         public ViewModels.Site Save(ViewModels.RegisterSite site)
         {
             try
             {
-                if(!ValidateSite(site))
+                if (!ValidateSite(site))
                 {
                     base.ValidationFailed();
                     return null;
@@ -61,7 +89,8 @@ namespace HonestProject.Repositories
                 DataModels.Site dbSite = new DataModels.Site();
                 dbSite.HoursPerDay = site.HoursPerDay;
                 dbSite.IncludeWeekends = site.IncludeWeekends;
-                dbSite.Name = site.Name; 
+                dbSite.Name = site.Name;
+                dbSite.UniqueSiteId = site.UniqueSiteId;
                 dbSite.PublicIdentifier = Guid.NewGuid();
                 this.context.Site.Add(dbSite);
                 this.context.SaveChanges();
@@ -72,9 +101,9 @@ namespace HonestProject.Repositories
                 viewSite.IncludeWeekends = dbSite.IncludeWeekends;
                 viewSite.Name = dbSite.Name;
                 return viewSite;
-                
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 base.SetError(e.Message);
                 return null;
@@ -84,25 +113,25 @@ namespace HonestProject.Repositories
         private bool ValidateSite(ViewModels.RegisterSite site)
         {
             //Can't save more than one site in single site mode
-            if(this.configuration["SingleSiteMode"] == "true")
+            if (this.configuration["SingleSiteMode"].ToLower() == "true")
             {
-                if(this.context.Site.Count() > 0)
+                if (this.context.Site.Count() > 0)
                 {
                     return false;
                 }
             }
 
-            if(String.IsNullOrEmpty(site.Name) || site.Name.Length > 50)
+            if (String.IsNullOrEmpty(site.Name) || site.Name.Length > 50)
             {
                 return false;
             }
 
-            if(site.HoursPerDay <= 0)
+            if (site.HoursPerDay <= 0)
             {
                 return false;
             }
 
-            if(String.IsNullOrEmpty(site.UniqueSiteId) || site.UniqueSiteId.Length > 100)
+            if (String.IsNullOrEmpty(site.UniqueSiteId) || site.UniqueSiteId.Length > 100)
             {
                 return false;
             }

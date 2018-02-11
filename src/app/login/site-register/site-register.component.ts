@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegisterSite } from '../_models/registerSite.model'
-import {Router} from '@angular/router'
-import {SiteService} from '../_services/site.service'
+import { Router } from '@angular/router'
+import { SiteService } from '../_services/site.service'
 
 @Component({
   selector: 'app-site-register',
@@ -21,15 +21,16 @@ export class SiteRegisterComponent implements OnInit {
 
   onSubmit() {
     this.siteService.RegisterNewSite(this.registerSite)
-    .subscribe(result => {
-      if(result === true) {
-        this.router.navigate(['/register']);
-      }
-      else
-      {
-        this.loading = false;
-      }
-    })
+      .subscribe(result => {
+        if (result === true) {
+          this.router.navigate(['/register']);
+        }
+        else {
+          this.loading = false;
+        }
+      },
+      error => console.log(error))
+
   }
 
 }
