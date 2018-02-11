@@ -28,7 +28,8 @@ export class RegisterPageComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Submit');
+    const formModel = this.registerForm.value;
+    
   }
 
 }

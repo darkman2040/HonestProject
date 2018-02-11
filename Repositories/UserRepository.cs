@@ -44,7 +44,7 @@ namespace HonestProject.Repositories
             }
         }
 
-        public ViewModels.User Save(ViewModels.User user)
+        public ViewModels.User Save(ViewModels.RegisterUser user)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace HonestProject.Repositories
                 dbUser.LastName = user.LastName;
                 dbUser.PasswordHash = user.Password;
                 dbUser.PublicIdentifier = Guid.NewGuid();
-                DataModels.Site site = this.context.Site.Where(x => x.PublicIdentifier == user.UserSite).FirstOrDefault();
+                DataModels.Site site = this.context.Site.Where(x => x.UniqueSiteId == user.UserSiteId).FirstOrDefault();
                 dbUser.Site = site;
                 this.context.User.Add(dbUser);
                 this.context.SaveChanges();
@@ -83,7 +83,7 @@ namespace HonestProject.Repositories
 
         }
 
-        private bool ValidateUser(ViewModels.User user)
+        private bool ValidateUser(ViewModels.RegisterUser user)
         {
             if (String.IsNullOrEmpty(user.FirstName) || user.FirstName.Length > 50)
             {
@@ -100,12 +100,12 @@ namespace HonestProject.Repositories
                 return false;
             }
 
-            if (user.UserSite == Guid.Empty)
+            if (String.IsNullOrEmpty(user.UserSiteId))
             {
                 return false;
             }
 
-            DataModels.Site site = this.context.Site.Where(x => x.PublicIdentifier == user.UserSite).FirstOrDefault();
+            DataModels.Site site = this.context.Site.Where(x => x.UniqueSiteId == user.UserSiteId).FirstOrDefault();
             if (site == null)
             {
                 return false;

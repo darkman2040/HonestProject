@@ -4,17 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using HonestProject.DataModels;
 using HonestProject.ViewModels;
-
+using Microsoft.Extensions.Configuration;
 
 namespace HonestProject.Repositories
 {
     public class SiteRepository : BasicRepository, ISiteRepository
     {
         HonestProjectContext context;
+        IConfiguration configuration;
 
-        public SiteRepository(HonestProjectContext context)
+        public SiteRepository(HonestProjectContext context, IConfiguration config)
         {
             this.context = context;
+            this.configuration = config;
         }
         public ViewModels.Site GetSite(Guid id)
         {
@@ -44,7 +46,7 @@ namespace HonestProject.Repositories
             
         }
 
-        public ViewModels.Site Save(ViewModels.Site site)
+        public ViewModels.Site Save(ViewModels.RegisterSite site)
         {
             try
             {
@@ -55,6 +57,7 @@ namespace HonestProject.Repositories
                 }
 
                 base.ValidationPassed();
+
                 DataModels.Site dbSite = new DataModels.Site();
                 dbSite.HoursPerDay = site.HoursPerDay;
                 dbSite.IncludeWeekends = site.IncludeWeekends;
@@ -62,8 +65,13 @@ namespace HonestProject.Repositories
                 dbSite.PublicIdentifier = Guid.NewGuid();
                 this.context.Site.Add(dbSite);
                 this.context.SaveChanges();
-                site.ID = dbSite.PublicIdentifier;
-                return site;
+                ViewModels.Site viewSite = new ViewModels.Site();
+                viewSite.UniqueSiteId = dbSite.UniqueSiteId;
+                viewSite.HoursPerDay = dbSite.HoursPerDay;
+                viewSite.ID = dbSite.PublicIdentifier;
+                viewSite.IncludeWeekends = dbSite.IncludeWeekends;
+                viewSite.Name = dbSite.Name;
+                return viewSite;
                 
             }
             catch(Exception e)
@@ -73,14 +81,28 @@ namespace HonestProject.Repositories
             }
         }
 
-        private bool ValidateSite(ViewModels.Site site)
+        private bool ValidateSite(ViewModels.RegisterSite site)
         {
-            if(site.Name.Length > 50)
+            //Can't save more than one site in single site mode
+            if(this.configuration["SingleSiteMode"] == "true")
+            {
+                if(this.context.Site.Count() > 0)
+                {
+                    return false;
+                }
+            }
+
+            if(String.IsNullOrEmpty(site.Name) || site.Name.Length > 50)
             {
                 return false;
             }
 
             if(site.HoursPerDay <= 0)
+            {
+                return false;
+            }
+
+            if(String.IsNullOrEmpty(site.UniqueSiteId) || site.UniqueSiteId.Length > 100)
             {
                 return false;
             }

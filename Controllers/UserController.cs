@@ -38,7 +38,7 @@ namespace HonestProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]ViewModels.User user)
+        public IActionResult Post([FromBody]ViewModels.RegisterUser user)
         {
             ViewModels.User returnedUser = userRepository.Save(user);
             if (!userRepository.ValidSubmission)

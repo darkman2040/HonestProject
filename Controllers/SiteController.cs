@@ -37,7 +37,7 @@ namespace HonestProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] ViewModels.Site site)
+        public IActionResult Post([FromBody] ViewModels.RegisterSite site)
         {
             ViewModels.Site returnSite = this.siteRepository.Save(site);
 

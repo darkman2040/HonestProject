@@ -15,6 +15,9 @@ namespace HonestProject.DataModels {
         public int HoursPerDay {get; set;}
         [Required]
         public bool IncludeWeekends{get; set;}
+        [Required]
+        [StringLength(100)]
+        public string UniqueSiteId {get; set;}
         public Guid PublicIdentifier{get; set;}
     }
 }
