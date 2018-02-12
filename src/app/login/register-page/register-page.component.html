@@ -3,7 +3,7 @@
     <h3>Please register</h3>
   </div>
   <div>
-    <form [formGroup]="registerForm" class="register-body" novalidate (click)="onSubmit()">
+    <form [formGroup]="registerForm" class="register-body" novalidate >
       <mat-form-field *ngIf="!singleSiteMode">
         <input matInput placeholder="siteId" formControlName="siteId"  required>
       </mat-form-field>
@@ -17,14 +17,12 @@
         <input matInput placeholder="Email" formControlName="email" required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Password" formControlName="password" required>
+        <input matInput placeholder="Password" formControlName="password" required type="password">
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Confirm Password" formControlName="confirmPassword" required>
+        <input matInput placeholder="Confirm Password" formControlName="confirmPassword" required type="password">
       </mat-form-field>
-      <button mat-raised-button [disabled]="loading || !registerForm.valid" color="primary" type="button">Register</button>
+      <button mat-raised-button [disabled]="loading || !registerForm.valid" color="primary" type="button" (click)="onSubmit()">Register</button>
     </form>
-    <p>Form value: {{ registerForm.value | json }}</p>
-    <p>Form status: {{ registerForm.status | json }}</p>
   </div>
 </div>

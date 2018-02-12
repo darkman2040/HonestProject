@@ -9,7 +9,8 @@
     <form #registerForm="ngForm" class="site-body" >
 
       <mat-form-field hint="My Company Name">
-        <input matInput [(ngModel)]="registerSite.name" placeholder="Company Name" name="name" required maxLength="50">
+        <input matInput id="name" placeholder="Company Name" name="name" required maxLength="50" [(ngModel)]="registerSite.name" #name="ngModel">
+        <mat-error *ngIf="name.errors?.required">Required</mat-error>
       </mat-form-field>
 
       <mat-form-field hint="ex. mysite@HonestProject.com">

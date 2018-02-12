@@ -5,6 +5,7 @@ using System.Linq;
 using HonestProject.DataModels;
 using HonestProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace HonestProject.Repositories
 {
@@ -12,10 +13,12 @@ namespace HonestProject.Repositories
     public class UserRepository : BasicRepository, IUserRepository
     {
         HonestProjectContext context;
+        IConfiguration configuration;
 
-        public UserRepository(HonestProjectContext context)
+        public UserRepository(HonestProjectContext context, IConfiguration configuration)
         {
             this.context = context;
+            this.configuration = configuration;
         }
 
         public ViewModels.User GetUser(Guid id)
@@ -23,7 +26,7 @@ namespace HonestProject.Repositories
             try
             {
                 DataModels.User dbUser = this.context.User.Include(x => x.Site).Where(x => x.PublicIdentifier == id).FirstOrDefault();
-                if(dbUser == null)
+                if (dbUser == null)
                 {
                     this.ValidationFailed();
                 }
@@ -37,7 +40,7 @@ namespace HonestProject.Repositories
                 user.UserSite = dbUser.Site.PublicIdentifier;
                 return user;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 this.SetError(e.Message);
                 return null;
@@ -62,14 +65,18 @@ namespace HonestProject.Repositories
                 dbUser.LastName = user.LastName;
                 dbUser.PasswordHash = user.Password;
                 dbUser.PublicIdentifier = Guid.NewGuid();
-                DataModels.Site site = this.context.Site.Where(x => x.UniqueSiteId == user.UserSiteId).FirstOrDefault();
-                dbUser.Site = site;
+                DataModels.Site site = null;
+                if (this.configuration["SingleSiteMode"].ToLower() == "true")
+                {
+                    site = this.context.Site.FirstOrDefault();
+                    dbUser.Site = site;
+                }
                 this.context.User.Add(dbUser);
                 this.context.SaveChanges();
                 ViewModels.User viewUser = new ViewModels.User();
                 viewUser.FirstName = dbUser.FirstName;
                 viewUser.LastName = dbUser.LastName;
-                viewUser.EmailAddress= dbUser.EmailAddress;
+                viewUser.EmailAddress = dbUser.EmailAddress;
                 viewUser.UserSite = site.PublicIdentifier;
                 viewUser.ID = dbUser.PublicIdentifier;
                 return viewUser;
@@ -100,14 +107,17 @@ namespace HonestProject.Repositories
                 return false;
             }
 
-            if (String.IsNullOrEmpty(user.UserSiteId))
+            if (this.configuration["SingleSiteMode"].ToLower() == "true")
             {
-                return false;
+                DataModels.Site site = this.context.Site.FirstOrDefault();
+                if (site == null)
+                {
+                    return false;
+                }
             }
-
-            DataModels.Site site = this.context.Site.Where(x => x.UniqueSiteId == user.UserSiteId).FirstOrDefault();
-            if (site == null)
+            else
             {
+                //Halt registration for now
                 return false;
             }
 
