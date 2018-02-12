@@ -13,7 +13,7 @@
         <mat-error *ngIf="name.errors?.required">Required</mat-error>
       </mat-form-field>
 
-      <mat-form-field hint="ex. mysite@HonestProject.com">
+      <mat-form-field hint="ex. mysite">
         <input matInput [(ngModel)]="registerSite.uniqueSiteId" placeholder="newSiteId" name="uniqueSiteId" maxLength="50" required>
         <span matSuffix>@HonestProject.com</span>
       </mat-form-field>
