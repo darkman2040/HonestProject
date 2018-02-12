@@ -2,6 +2,8 @@
   <mat-toolbar color="primary" class="landing-page-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <h1 class="landing-page-app-name">Hello {{user.firstName}}!</h1>
+    <span class="landing-page-spacer"></span>
+    <button mat-raised-button color="primary" (click)="onSignOut()">Sign Out</button>
     
   </mat-toolbar>
 

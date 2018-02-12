@@ -47,7 +47,7 @@ namespace HonestProject
 
             services.AddMvc();
 
-            var connection = @"Server=COLIN-PC\SQLEXPRESS;Database=HonestProject;Trusted_Connection=True;";
+            var connection = @"Server=(localdb)\MSSQLLocalDB;Database=HonestProject;Trusted_Connection=True;";
             services.AddDbContext<HonestProjectContext>(options =>
             options.UseSqlServer(connection));
 

@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.EntityFrameworkCore;
 
 namespace HonestProject.Controllers
 {
@@ -33,13 +34,13 @@ namespace HonestProject.Controllers
         public IActionResult Post([FromBody] AuthenticateRequest request)
         {
             AuthenticateResponse response = new AuthenticateResponse();
-            DataModels.User user = _context.User.Where(x => x.EmailAddress == request.username && x.PasswordHash == request.password).FirstOrDefault();
+            DataModels.User user = _context.User.Include(x => x.Role).Where(x => x.EmailAddress == request.username && x.PasswordHash == request.password).FirstOrDefault();
 
             if (user == null)
             {
                 return new ObjectResult(response);
             }
-            var claims = new[] { new Claim(ClaimTypes.Name, request.username) };
+            var claims = new[] { new Claim(ClaimTypes.Name, request.username), new Claim(ClaimTypes.Role, user.Role.Name) };
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["SecurityKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(

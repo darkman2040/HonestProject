@@ -14,7 +14,10 @@ namespace HonestProject.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(maxLength: 300, nullable: false),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    PublicIdentifier = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,7 +47,8 @@ namespace HonestProject.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 50, nullable: false)
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    PublicIdentifier = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -131,6 +135,12 @@ namespace HonestProject.Migrations
                 name: "IX_User_TeamID",
                 table: "User",
                 column: "TeamID");
+
+                migrationBuilder.Sql(@"INSERT INTO Role (Description, Name, PublicIdentifier) 
+                VALUES('Has access to all aspects and features of Honest Project. Has specific privilges for maintaing the site.', 'Site Administrator', NEWID()),
+                ('Manages several teams and has access to team data. Able to reconfigure teams.', 'Manager', NEWID()),
+                ('Manages an individual team. Can see team members data. Can create projects for a team', 'Team Leader', NEWID()),
+                ('Individual team member. Can see team project data and own time sheets.', 'Team Member', NEWID())");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

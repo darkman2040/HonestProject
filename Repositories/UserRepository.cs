@@ -25,7 +25,7 @@ namespace HonestProject.Repositories
         {
             try
             {
-                DataModels.User dbUser = this.context.User.Include(x => x.Site).Where(x => x.PublicIdentifier == id).FirstOrDefault();
+                DataModels.User dbUser = this.context.User.Include(x => x.Site).Include(x => x.Role).Where(x => x.PublicIdentifier == id).FirstOrDefault();
                 if (dbUser == null)
                 {
                     this.ValidationFailed();
@@ -38,12 +38,40 @@ namespace HonestProject.Repositories
                 user.FirstName = dbUser.FirstName;
                 user.LastName = dbUser.LastName;
                 user.UserSite = dbUser.Site.PublicIdentifier;
+                SetSecurityParams(user, dbUser);
                 return user;
             }
             catch (Exception e)
             {
                 this.SetError(e.Message);
                 return null;
+            }
+        }
+
+        private void SetSecurityParams(ViewModels.User user, DataModels.User dbUser)
+        {
+            if (dbUser.Role.Name == "Site Administrator")
+            {
+                user.IsSiteAdmin = true;
+                user.IsManager = true;
+                user.IsTeamLeader = true;
+                return;
+            }
+
+            if (dbUser.Role.Name == "Manager")
+            {
+                user.IsSiteAdmin = false;
+                user.IsManager = true;
+                user.IsTeamLeader = true;
+                return;
+            }
+
+            if (dbUser.Role.Name == "Team Leader")
+            {
+                user.IsSiteAdmin = false;
+                user.IsManager = false;
+                user.IsTeamLeader = true;
+                return;
             }
         }
 
@@ -70,6 +98,16 @@ namespace HonestProject.Repositories
                 {
                     site = this.context.Site.FirstOrDefault();
                     dbUser.Site = site;
+                }
+                if (this.context.User.Count() == 0)
+                {
+                    //Congrats you are the site admin!
+                    dbUser.Role = this.context.Role.Where(x => x.ID == 1).FirstOrDefault();
+                }
+                else
+                {
+                    //Lowly team member
+                    dbUser.Role = this.context.Role.Where(x => x.ID == 4).FirstOrDefault();
                 }
                 this.context.User.Add(dbUser);
                 this.context.SaveChanges();
@@ -107,9 +145,11 @@ namespace HonestProject.Repositories
                 return false;
             }
 
+
+            DataModels.Site site = null;
             if (this.configuration["SingleSiteMode"].ToLower() == "true")
             {
-                DataModels.Site site = this.context.Site.FirstOrDefault();
+                site = this.context.Site.FirstOrDefault();
                 if (site == null)
                 {
                     return false;
@@ -118,6 +158,13 @@ namespace HonestProject.Repositories
             else
             {
                 //Halt registration for now
+                return false;
+            }
+
+            //TODO: Update basic Repo class to allow setting validation error message (enum or code that client can display)
+            DataModels.User[] users = this.context.User.Where(x => x.EmailAddress == user.EmailAddress).ToArray();
+            if (users.Count() > 0)
+            {
                 return false;
             }
 

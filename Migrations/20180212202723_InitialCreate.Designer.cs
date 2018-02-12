@@ -11,7 +11,7 @@ using System;
 namespace HonestProject.Migrations
 {
     [DbContext(typeof(HonestProjectContext))]
-    [Migration("20180212012347_InitialCreate")]
+    [Migration("20180212202723_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,16 @@ namespace HonestProject.Migrations
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(300);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<Guid>("PublicIdentifier");
 
                     b.HasKey("ID");
 
@@ -63,6 +73,8 @@ namespace HonestProject.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
+
+                    b.Property<Guid>("PublicIdentifier");
 
                     b.HasKey("ID");
 

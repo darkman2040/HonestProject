@@ -25,6 +25,16 @@ namespace HonestProject.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(300);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<Guid>("PublicIdentifier");
+
                     b.HasKey("ID");
 
                     b.ToTable("Role");
@@ -62,6 +72,8 @@ namespace HonestProject.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
+
+                    b.Property<Guid>("PublicIdentifier");
 
                     b.HasKey("ID");
 

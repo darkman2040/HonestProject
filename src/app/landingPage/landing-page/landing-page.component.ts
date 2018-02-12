@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'
 import { MediaMatcher } from '@angular/cdk/layout';
 import { UserService } from '../_services/userService'
 import { User } from '../models/User'
@@ -26,7 +27,8 @@ export class LandingPageComponent implements OnInit {
 
   constructor(changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
-    private userService: UserService) {
+    private userService: UserService,
+    private router: Router) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -35,12 +37,16 @@ export class LandingPageComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.userService.GetCurrentUser()
-    .subscribe(
-      (user: User) => {
-        this.user = user;
-        console.log('User:' + JSON.stringify(user));
-        this.loading = false;
-      });
+      .subscribe(
+        (user: User) => {
+          this.user = user;
+          console.log('User:' + JSON.stringify(user));
+          this.loading = false;
+        });
+  }
+
+  onSignOut() {
+    this.router.navigate(['/login']);
   }
 
 }
