@@ -75,7 +75,19 @@ namespace HonestProject.Migrations
 
                     b.Property<Guid>("PublicIdentifier");
 
+                    b.Property<int?>("TeamLeaderId");
+
+                    b.Property<int?>("TeamManagerId");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("TeamLeaderId")
+                        .IsUnique()
+                        .HasFilter("[TeamLeaderId] IS NOT NULL");
+
+                    b.HasIndex("TeamManagerId")
+                        .IsUnique()
+                        .HasFilter("[TeamManagerId] IS NOT NULL");
 
                     b.ToTable("Team");
                 });
@@ -141,6 +153,17 @@ namespace HonestProject.Migrations
                     b.HasIndex("TeamID");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("HonestProject.DataModels.Team", b =>
+                {
+                    b.HasOne("HonestProject.DataModels.User", "TeamLeader")
+                        .WithOne()
+                        .HasForeignKey("HonestProject.DataModels.Team", "TeamLeaderId");
+
+                    b.HasOne("HonestProject.DataModels.User", "TeamManager")
+                        .WithOne()
+                        .HasForeignKey("HonestProject.DataModels.Team", "TeamManagerId");
                 });
 
             modelBuilder.Entity("HonestProject.DataModels.TimeEntry", b =>

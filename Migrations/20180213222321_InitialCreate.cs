@@ -42,20 +42,6 @@ namespace HonestProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Team",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
-                    PublicIdentifier = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Team", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -86,10 +72,32 @@ namespace HonestProject.Migrations
                         principalTable: "Site",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Team",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    PublicIdentifier = table.Column<Guid>(nullable: false),
+                    TeamLeaderId = table.Column<int>(nullable: true),
+                    TeamManagerId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Team", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_User_Team_TeamID",
-                        column: x => x.TeamID,
-                        principalTable: "Team",
+                        name: "FK_Team_User_TeamLeaderId",
+                        column: x => x.TeamLeaderId,
+                        principalTable: "User",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Team_User_TeamManagerId",
+                        column: x => x.TeamManagerId,
+                        principalTable: "User",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -117,6 +125,20 @@ namespace HonestProject.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Team_TeamLeaderId",
+                table: "Team",
+                column: "TeamLeaderId",
+                unique: true,
+                filter: "[TeamLeaderId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Team_TeamManagerId",
+                table: "Team",
+                column: "TeamManagerId",
+                unique: true,
+                filter: "[TeamManagerId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TimeEntry_UserID",
                 table: "TimeEntry",
                 column: "UserID");
@@ -136,7 +158,15 @@ namespace HonestProject.Migrations
                 table: "User",
                 column: "TeamID");
 
-                migrationBuilder.Sql(@"INSERT INTO Role (Description, Name, PublicIdentifier) 
+            migrationBuilder.AddForeignKey(
+                name: "FK_User_Team_TeamID",
+                table: "User",
+                column: "TeamID",
+                principalTable: "Team",
+                principalColumn: "ID",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.Sql(@"INSERT INTO Role (Description, Name, PublicIdentifier) 
                 VALUES('Has access to all aspects and features of Honest Project. Has specific privilges for maintaing the site.', 'Site Administrator', NEWID()),
                 ('Manages several teams and has access to team data. Able to reconfigure teams.', 'Manager', NEWID()),
                 ('Manages an individual team. Can see team members data. Can create projects for a team', 'Team Leader', NEWID()),
@@ -145,6 +175,14 @@ namespace HonestProject.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Team_User_TeamLeaderId",
+                table: "Team");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Team_User_TeamManagerId",
+                table: "Team");
+
             migrationBuilder.DropTable(
                 name: "TimeEntry");
 

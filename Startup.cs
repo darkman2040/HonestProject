@@ -53,6 +53,7 @@ namespace HonestProject
 
             services.AddScoped<ISiteRepository, SiteRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITeamRepository, TeamRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,7 +7,7 @@ namespace HonestProject.DataModels
 {
     public class HonestProjectContext : DbContext
     {
-        public HonestProjectContext (DbContextOptions<HonestProjectContext> options)
+        public HonestProjectContext(DbContextOptions<HonestProjectContext> options)
             : base(options)
         {
         }
@@ -16,6 +16,24 @@ namespace HonestProject.DataModels
         public DbSet<HonestProject.DataModels.Role> Role { get; set; }
         public DbSet<HonestProject.DataModels.Site> Site { get; set; }
         public DbSet<HonestProject.DataModels.Team> Team { get; set; }
-         public DbSet<HonestProject.DataModels.TimeEntry> TimeEntry { get; set; }
+        public DbSet<HonestProject.DataModels.TimeEntry> TimeEntry { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                            .HasOne(p => p.Team)
+                            .WithMany(b => b.TeamMembers);
+
+            modelBuilder.Entity<Team>()
+            .HasOne(t => t.TeamLeader)
+            .WithOne()
+            .HasForeignKey<Team>(e => e.TeamLeaderId);
+
+            modelBuilder.Entity<Team>()
+            .HasOne(t => t.TeamManager)
+            .WithOne()
+            .HasForeignKey<Team>(e => e.TeamManagerId);
+
+        }
     }
 }
