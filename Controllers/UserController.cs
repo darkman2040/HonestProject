@@ -22,6 +22,18 @@ namespace HonestProject.Controllers
             this.configuration = configuration;
         }
 
+        [Authorize(Roles = "Site Administrator,Manager")]
+        [HttpGet("unassigned")]
+        public IActionResult GetUnassignedUsers()
+        {
+            ViewModels.User[] users = this.userRepository.GetUnassignedUsers(this.HttpContext.User.Identity.Name);
+            if(userRepository.ErrorDetected)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return new ObjectResult(users);
+        }
 
 
         [Authorize]

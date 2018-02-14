@@ -6,6 +6,7 @@ namespace HonestProject.Repositories
     public interface IUserRepository : IBasicRepository
     {
         User GetUser(Guid id);
+        User[] GetUnassignedUsers(string userName);
         User Save(RegisterUser user);
     }
 }

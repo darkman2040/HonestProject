@@ -171,5 +171,23 @@ namespace HonestProject.Repositories
             return true;
 
         }
+
+        public ViewModels.User[] GetUnassignedUsers(string userName)
+        {
+            DataModels.User activeUser = this.context.User.Include(x => x.Site).Where(x => x.EmailAddress == userName).FirstOrDefault();
+            DataModels.User[] users = this.context.User.Include(x => x.Site).Include(x => x.Team)
+            .Where(x => x.Site == activeUser.Site && x.Team == null).ToArray();
+            List<ViewModels.User> viewUsers = new List<ViewModels.User>();
+            foreach(var user in users)
+            {
+                ViewModels.User viewUser = new ViewModels.User();
+                viewUser.FirstName = user.FirstName;
+                viewUser.LastName = user.LastName;
+                viewUser.EmailAddress = user.EmailAddress;
+                viewUsers.Add(viewUser);
+            }
+
+            return viewUsers.ToArray();
+        }
     }
 }

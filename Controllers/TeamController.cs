@@ -21,7 +21,7 @@ namespace HonestProject.Controllers
 
         [Authorize(Roles = "Site Administrator,Manager")]
         [HttpPost]
-        public IActionResult Post(ViewModels.RegisterTeam newTeam)
+        public IActionResult Post([FromBody]ViewModels.RegisterTeam newTeam)
         {
             var userName = this.HttpContext.User.Identity.Name;
             ViewModels.Team viewTeam = repository.Save(newTeam, userName);
