@@ -14,11 +14,11 @@ namespace HonestProject.DataModels
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+        [Required]
+        [StringLength(200)]
+        public string Description {get; set;}
         public List<User> TeamMembers { get; set; }
-        public int? TeamLeaderId { get; set; }
         public User TeamLeader { get; set; }
-
-        public int? TeamManagerId { get; set; }
         public User TeamManager { get; set; }
 
         [Required]

@@ -26,13 +26,11 @@ namespace HonestProject.DataModels
 
             modelBuilder.Entity<Team>()
             .HasOne(t => t.TeamLeader)
-            .WithOne()
-            .HasForeignKey<Team>(e => e.TeamLeaderId);
+            .WithMany();
 
             modelBuilder.Entity<Team>()
             .HasOne(t => t.TeamManager)
-            .WithOne()
-            .HasForeignKey<Team>(e => e.TeamManagerId);
+            .WithMany();
 
         }
     }

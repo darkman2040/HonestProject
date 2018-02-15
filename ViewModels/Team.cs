@@ -7,6 +7,8 @@ namespace HonestProject.ViewModels
     public class Team
     {
         public string Name { get; set; }
+        public string Description {get; set;}
+        public TeamMember[] TeamMembers {get; set;}
         public Guid PublicIdentifier {get; set;}
         
     }

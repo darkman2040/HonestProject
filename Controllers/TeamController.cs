@@ -20,19 +20,33 @@ namespace HonestProject.Controllers
         }
 
         [Authorize(Roles = "Site Administrator,Manager")]
+        [HttpGet("managedTeams")]
+        public IActionResult GetManagedTeams()
+        {
+            var userName = this.HttpContext.User.Identity.Name;
+            ViewModels.Team[] teams = this.repository.GetManagedTeams(userName);
+            if(repository.ErrorDetected)
+            {
+                 return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return new ObjectResult(teams);
+        }
+
+        [Authorize(Roles = "Site Administrator,Manager")]
         [HttpPost]
         public IActionResult Post([FromBody]ViewModels.RegisterTeam newTeam)
         {
             var userName = this.HttpContext.User.Identity.Name;
             ViewModels.Team viewTeam = repository.Save(newTeam, userName);
-            if(!repository.ValidSubmission)
+            if (!repository.ValidSubmission)
             {
                 return BadRequest(newTeam);
             }
 
-            if(repository.ErrorDetected)
+            if (repository.ErrorDetected)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError); 
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
             return new ObjectResult(viewTeam);

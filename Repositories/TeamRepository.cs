@@ -21,6 +21,39 @@ namespace HonestProject.Repositories
             this.configuration = configuration;
         }
 
+        public ViewModels.Team[] GetManagedTeams(string userName)
+        {
+            DataModels.User requestingUser = this.context.User.Where(x => x.EmailAddress == userName).FirstOrDefault();
+            DataModels.Team[] teams = this.context.Team.Include(x => x.TeamManager)
+            .Include(x => x.TeamMembers).ThenInclude(x => x.Role)
+            //.Include(x => x.TeamMembers).ThenInclude(x => x.PublicIdentifier)
+            //.Include(x => x.TeamMembers).ThenInclude(x => x.FirstName)
+            //.Include(x => x.TeamMembers).ThenInclude(x => x.LastName)
+            .Where(x => x.TeamManager == requestingUser).ToArray();
+            List<ViewModels.Team> viewTeams = new List<ViewModels.Team>();
+
+            foreach(DataModels.Team team in teams)
+            {
+                ViewModels.Team viewTeam = new ViewModels.Team();
+                viewTeam.Name = team.Name;
+                viewTeam.Description = team.Description;
+                viewTeam.PublicIdentifier = team.PublicIdentifier;
+                List<TeamMember> members = new List<TeamMember>();
+                foreach(DataModels.User user in team.TeamMembers)
+                {
+                    TeamMember member = new TeamMember();
+                    member.Name = user.LastName + ", " + user.FirstName;
+                    member.PublicIdentifier = user.PublicIdentifier;
+                    member.Role = user.Role.Name;
+                    members.Add(member);
+                }
+                viewTeam.TeamMembers = members.ToArray();
+                viewTeams.Add(viewTeam);
+            }
+
+            return viewTeams.ToArray();
+        }
+
         public ViewModels.Team Save(ViewModels.RegisterTeam newTeam, string userName)
         {
             if (!ValidateTeam(newTeam, userName))

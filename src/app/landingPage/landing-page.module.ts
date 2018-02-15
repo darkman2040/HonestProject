@@ -13,6 +13,9 @@ import {TeamManagementComponent} from '../screens/team-management/team-managemen
 import {UserTimeWidgetComponent} from '../widgets/user-time-widget/user-time-widget.component';
 import { ProjectViewerComponent } from '../widgets/project-viewer/project-viewer.component';
 
+import { UserService} from './_services/userService'
+import { TeamService} from './_services/teamService'
+
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 
@@ -31,6 +34,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     TimeSheetComponent,
     TeamManagementComponent
   ],
-  providers: [ ]
+  providers: [UserService,
+    TeamService ]
 })
 export class LandingPageModule {}

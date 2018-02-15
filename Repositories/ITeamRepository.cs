@@ -7,6 +7,7 @@ namespace HonestProject.Repositories {
 
     public interface ITeamRepository : IBasicRepository
     {
+        ViewModels.Team[] GetManagedTeams(string userName);
         ViewModels.Team Save(ViewModels.RegisterTeam newTeam, string userName);
     }
 }

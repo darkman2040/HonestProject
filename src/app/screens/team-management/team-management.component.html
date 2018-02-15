@@ -1,6 +1,56 @@
-<div>
-    <button mat-fab color="primary">
-        <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-    </button>
+<div class="team-management-container">
+  <mat-card>
 
+    <mat-card-title>
+      <div class="team-management-title">Teams
+        <span class="team-management-spacer"></span>
+        <button mat-mini-fab color="primary">
+          <mat-icon aria-label="Icon to add new team member">add</mat-icon>
+        </button>
+      </div>
+    </mat-card-title>
+    <mat-card-subtitle>The list of teams that you manage</mat-card-subtitle>
+    <mat-card-content>
+      <mat-accordion *ngIf="!this.loading && this.teams.length > 0">
+        <mat-expansion-panel *ngFor="let team of teams; let index = index">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="team-management-panel-header-title">
+              {{team.name}} Team
+            </mat-panel-title>
+            <mat-panel-description class="team-management-panel-header-description">
+              {{team.description}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-table #table [dataSource]="dataSourceArray[index]">
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+              </ng-container>
+          
+              <!-- Name Column -->
+              <ng-container matColumnDef="role">
+                <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.role}} </mat-cell>
+              </ng-container>
+  
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+
+        </mat-expansion-panel>
+      </mat-accordion>
+      <div *ngIf="this.loading" class="team-management-loading">
+        <div>
+          <mat-spinner></mat-spinner>
+        </div>
+        <div class="team-management-loading-text">Loading.....</div> 
+      </div>
+      <div *ngIf="!this.loading && this.teams.length == 0">
+        You do not manage any teams. Click the '+' button to create a team
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

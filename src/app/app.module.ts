@@ -20,7 +20,6 @@ import {LoginModule} from './login/login.module'
 
 import {AuthGuard} from './login/_guards/auth.guard'
 import {AuthenticationService} from './login/_services/authentication.service'
-import { UserService} from './landingPage/_services/userService'
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './login/_interceptors/authenticationInterceptor';
@@ -50,7 +49,6 @@ const appRoutes: Routes = [
   ],
   providers: [AuthGuard,
     AuthenticationService,
-    UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
