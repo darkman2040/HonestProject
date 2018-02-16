@@ -33,7 +33,7 @@ namespace HonestProject.Repositories
 
                 this.ValidationPassed();
                 ViewModels.User user = new ViewModels.User();
-                user.ID = dbUser.PublicIdentifier;
+                user.userId = dbUser.PublicIdentifier;
                 user.EmailAddress = dbUser.EmailAddress;
                 user.FirstName = dbUser.FirstName;
                 user.LastName = dbUser.LastName;
@@ -116,7 +116,7 @@ namespace HonestProject.Repositories
                 viewUser.LastName = dbUser.LastName;
                 viewUser.EmailAddress = dbUser.EmailAddress;
                 viewUser.UserSite = site.PublicIdentifier;
-                viewUser.ID = dbUser.PublicIdentifier;
+                viewUser.userId = dbUser.PublicIdentifier;
                 return viewUser;
 
             }
@@ -184,6 +184,7 @@ namespace HonestProject.Repositories
                 viewUser.FirstName = user.FirstName;
                 viewUser.LastName = user.LastName;
                 viewUser.EmailAddress = user.EmailAddress;
+                viewUser.userId = user.PublicIdentifier;
                 viewUsers.Add(viewUser);
             }
 

@@ -35,7 +35,6 @@ namespace HonestProject.Controllers
             return new ObjectResult(users);
         }
 
-
         [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)

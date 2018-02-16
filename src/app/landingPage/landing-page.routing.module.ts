@@ -27,8 +27,9 @@ const screensRoutes: Routes = [
       },
       {
         path: 'team-management',
-        component: TeamManagementComponent
+        component: TeamManagementComponent,
       }
+      
 
     ],
     canActivate: [AuthGuard]

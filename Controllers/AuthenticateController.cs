@@ -47,7 +47,7 @@ namespace HonestProject.Controllers
             issuer: "yourdomain.com",
             audience: "yourdomain.com",
             claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
+            expires: DateTime.Now.AddMinutes(90),
             signingCredentials: creds);
             response.token = new JwtSecurityTokenHandler().WriteToken(token);
             response.userId = user.PublicIdentifier;

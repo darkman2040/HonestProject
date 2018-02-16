@@ -5,7 +5,7 @@ using System.Linq;
 namespace HonestProject.ViewModels
 {
     public class User{
-        public Guid ID{get; set;}
+        public Guid userId{get; set;}
         public string FirstName {get; set;}
         public string LastName {get; set;}
         public string EmailAddress {get; set;}

@@ -15,4 +15,8 @@ export class UserService {
         this.userId = currentUser && currentUser.userId;
         return this.http.get<User>('api/user/' + this.userId); 
     }
+
+    public GetUnassignedUsers(): Observable<User[]> {
+        return this.http.get<User[]>('api/user/unassigned'); 
+    }
 }

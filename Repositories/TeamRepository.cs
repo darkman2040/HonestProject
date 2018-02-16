@@ -68,18 +68,18 @@ namespace HonestProject.Repositories
             dbTeam.PublicIdentifier = Guid.NewGuid();
             DataModels.User postingUser = this.context.User.Where(x => x.EmailAddress == userName).FirstOrDefault();
             dbTeam.Site = postingUser.Site;
-            if (newTeam.TeamLeader != null)
+            if (newTeam.TeamLeaderId != null)
             {
-                DataModels.User teamLeader = this.context.User.Where(x => x.PublicIdentifier == newTeam.TeamLeader).FirstOrDefault();
+                DataModels.User teamLeader = this.context.User.Where(x => x.PublicIdentifier == newTeam.TeamLeaderId).FirstOrDefault();
                 if (teamLeader != null)
                 {
                     dbTeam.TeamLeader = teamLeader;
                 }
             }
 
-            if (newTeam.TeamManager != null)
+            if (newTeam.TeamManagerId != null)
             {
-                DataModels.User teamManager = this.context.User.Where(x => x.PublicIdentifier == newTeam.TeamManager).FirstOrDefault();
+                DataModels.User teamManager = this.context.User.Where(x => x.PublicIdentifier == newTeam.TeamManagerId).FirstOrDefault();
                 if (teamManager != null)
                 {
                     dbTeam.TeamManager = teamManager;
@@ -88,9 +88,9 @@ namespace HonestProject.Repositories
 
             dbTeam.TeamMembers = new List<DataModels.User>();
 
-            foreach(Guid memberId in newTeam.TeamMembers)
+            foreach(RegisterMember member in newTeam.TeamMembers)
             {
-                DataModels.User teamMember = this.context.User.Where(x => x.PublicIdentifier == memberId).FirstOrDefault();
+                DataModels.User teamMember = this.context.User.Where(x => x.PublicIdentifier == member.Id).FirstOrDefault();
                 dbTeam.TeamMembers.Add(teamMember);
             }
 
