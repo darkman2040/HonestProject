@@ -1,4 +1,3 @@
-
 <h3>
   Team Creation
 </h3>
@@ -28,8 +27,10 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Add team members</ng-template>
-    <div *ngFor="let user of userList">
-      <mat-slide-toggle (click)="onSelect(user)">{{user.firstName + ' ' + user.lastName}}</mat-slide-toggle>
+    <div class="add-new-team-userList">
+      <div *ngFor="let user of userList">
+        <mat-slide-toggle class="add-new-team-toggle" (click)="onSelect(user)">{{user.firstName + ' ' + user.lastName}}</mat-slide-toggle>
+      </div>
     </div>
     <div>
       <button mat-button matStepperPrevious>Back</button>
@@ -38,9 +39,9 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Choose a team leader</ng-template>
-    <div>
-      <mat-radio-group class="example-radio-group" [(ngModel)]="teamLeader">
-        <mat-radio-button class="example-radio-button" *ngFor="let user of selectedUsers" [value]="user">
+    <div class="add-new-team-userList">
+      <mat-radio-group class="add-new-team-radio-group" [(ngModel)]="teamLeader">
+        <mat-radio-button class="add-new-team-radio-button" *ngFor="let user of selectedUsers" [value]="user">
           {{user.firstName + ' ' + user.lastName}}
         </mat-radio-button>
       </mat-radio-group>
