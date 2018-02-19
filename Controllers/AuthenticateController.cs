@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
+using HonestProject.Utilities;
 
 namespace HonestProject.Controllers
 {
@@ -21,11 +22,13 @@ namespace HonestProject.Controllers
 
         HonestProjectContext _context;
         IConfiguration _configuration;
+        IPasswordHashUtility hashUtility;
 
-        public AuthenticateController(HonestProjectContext context, IConfiguration configuration)
+        public AuthenticateController(HonestProjectContext context, IConfiguration configuration, IPasswordHashUtility hashUtility)
         {
             _context = context;
             _configuration = configuration;
+            this.hashUtility = hashUtility;
         }
 
         // POST api/authenticate
@@ -34,9 +37,14 @@ namespace HonestProject.Controllers
         public IActionResult Post([FromBody] AuthenticateRequest request)
         {
             AuthenticateResponse response = new AuthenticateResponse();
-            DataModels.User user = _context.User.Include(x => x.Role).Where(x => x.EmailAddress == request.username && x.PasswordHash == request.password).FirstOrDefault();
+            DataModels.User user = _context.User.Include(x => x.Role).Where(x => x.EmailAddress == request.username).FirstOrDefault();
 
             if (user == null)
+            {
+                return new ObjectResult(response);
+            }
+
+            if(!hashUtility.CheckMatch(user.PasswordHash, request.password))
             {
                 return new ObjectResult(response);
             }

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using HonestProject.DataModels;
+using HonestProject.Utilities;
 
 namespace HonestProject.Data
 {
@@ -43,13 +44,15 @@ namespace HonestProject.Data
             Role manager = context.Role.Where(x => x.Name == "Manager").FirstOrDefault();
             Role siteAdministrator = context.Role.Where(x => x.Name == "Site Administrator").FirstOrDefault();
 
+            PasswordHashUtility utility = new PasswordHashUtility();
+
             var users = new User[]{
-                new User() { Site = site, FirstName = "Colin", LastName = "Gormley", CreatedDate = DateTime.Now, PasswordHash = "fakepassword", EmailAddress = "colin@b.c", PublicIdentifier = Guid.NewGuid(), Role = siteAdministrator },
-                new User() { Site = site, FirstName = "Eric", LastName = "Lavangi", CreatedDate = DateTime.Now, PasswordHash = "fakepassword", EmailAddress = "eric@b.c", PublicIdentifier = Guid.NewGuid(), Role = teamMember },
-                new User() { Site = site, FirstName = "Osama", LastName = "Abdullahussein", CreatedDate = DateTime.Now, PasswordHash = "fakepassword", EmailAddress = "osama@b.c", PublicIdentifier = Guid.NewGuid(), Role = teamMember },
-                new User() { Site = site, FirstName = "Kevin", LastName = "Welcht", CreatedDate = DateTime.Now, PasswordHash = "fakepassword", EmailAddress = "kevin@b.c", PublicIdentifier = Guid.NewGuid(), Role = teamMember },
-                new User() { Site = site, FirstName = "Rebecca", LastName = "Garcia", CreatedDate = DateTime.Now, PasswordHash = "fakepassword", EmailAddress = "rebecca@b.c", PublicIdentifier = Guid.NewGuid(), Role = teamLeader },
-                new User() { Site = site, FirstName = "Kris", LastName = "Doer", CreatedDate = DateTime.Now, PasswordHash = "fakepassword", EmailAddress = "kris@b.c", PublicIdentifier = Guid.NewGuid(), Role = manager }
+                new User() { Site = site, FirstName = "Colin", LastName = "Gormley", CreatedDate = DateTime.Now, PasswordHash = utility.CalculateHash("fakepassword"), EmailAddress = "colin@b.c", PublicIdentifier = Guid.NewGuid(), Role = siteAdministrator },
+                new User() { Site = site, FirstName = "Eric", LastName = "Lavangi", CreatedDate = DateTime.Now, PasswordHash = utility.CalculateHash("fakepassword"), EmailAddress = "eric@b.c", PublicIdentifier = Guid.NewGuid(), Role = teamMember },
+                new User() { Site = site, FirstName = "Osama", LastName = "Abdullahussein", CreatedDate = DateTime.Now, PasswordHash = utility.CalculateHash("fakepassword"), EmailAddress = "osama@b.c", PublicIdentifier = Guid.NewGuid(), Role = teamMember },
+                new User() { Site = site, FirstName = "Kevin", LastName = "Welcht", CreatedDate = DateTime.Now, PasswordHash = utility.CalculateHash("fakepassword"), EmailAddress = "kevin@b.c", PublicIdentifier = Guid.NewGuid(), Role = teamMember },
+                new User() { Site = site, FirstName = "Rebecca", LastName = "Garcia", CreatedDate = DateTime.Now, PasswordHash = utility.CalculateHash("fakepassword"), EmailAddress = "rebecca@b.c", PublicIdentifier = Guid.NewGuid(), Role = teamLeader },
+                new User() { Site = site, FirstName = "Kris", LastName = "Doer", CreatedDate = DateTime.Now, PasswordHash = utility.CalculateHash("fakepassword"), EmailAddress = "kris@b.c", PublicIdentifier = Guid.NewGuid(), Role = manager }
                 
             };
 

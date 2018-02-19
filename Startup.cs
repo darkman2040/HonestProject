@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using HonestProject.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using HonestProject.Utilities;
 
 namespace HonestProject
 {
@@ -54,6 +55,7 @@ namespace HonestProject
             services.AddScoped<ISiteRepository, SiteRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
+            services.AddScoped<IPasswordHashUtility, PasswordHashUtility>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

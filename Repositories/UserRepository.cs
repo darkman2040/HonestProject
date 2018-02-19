@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using HonestProject.DataModels;
+using HonestProject.Utilities;
 using HonestProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,11 +15,13 @@ namespace HonestProject.Repositories
     {
         HonestProjectContext context;
         IConfiguration configuration;
+        IPasswordHashUtility hashGenerator;
 
-        public UserRepository(HonestProjectContext context, IConfiguration configuration)
+        public UserRepository(HonestProjectContext context, IConfiguration configuration, IPasswordHashUtility hashGenerator)
         {
             this.context = context;
             this.configuration = configuration;
+            this.hashGenerator = hashGenerator;
         }
 
         public ViewModels.User GetUser(Guid id)
@@ -91,7 +94,7 @@ namespace HonestProject.Repositories
                 dbUser.EmailAddress = user.EmailAddress;
                 dbUser.FirstName = user.FirstName;
                 dbUser.LastName = user.LastName;
-                dbUser.PasswordHash = user.Password;
+                dbUser.PasswordHash = hashGenerator.CalculateHash(user.Password);
                 dbUser.PublicIdentifier = Guid.NewGuid();
                 DataModels.Site site = null;
                 if (this.configuration["SingleSiteMode"].ToLower() == "true")
