@@ -12,6 +12,7 @@ export class LoginPageComponent implements OnInit {
   loading = false;
   username: string;
   password: string;
+  getRefreshToken: boolean;
   hide: boolean = true;
 
   constructor(
@@ -25,7 +26,7 @@ export class LoginPageComponent implements OnInit {
 
   onSubmit() {
     this.loading = true;
-    this.authenticationService.login(this.username, this.password)
+    this.authenticationService.login(this.username, this.password, this.getRefreshToken)
     .subscribe(result => {
       if(result === true) {
         this.router.navigate(['/']);

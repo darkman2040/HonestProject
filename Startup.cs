@@ -43,41 +43,42 @@ namespace HonestProject
                             ValidAudience = "yourdomain.com",
                             IssuerSigningKey = new SymmetricSecurityKey(
                                 System.Text.Encoding.UTF8.GetBytes(Configuration["SecurityKey"]))
-                        };
-                    });
+                    };
+        });
 
             services.AddMvc();
 
             var connection = @"Server=COLIN-PC\SQLEXPRESS;Database=HonestProject;Trusted_Connection=True;";
-            services.AddDbContext<HonestProjectContext>(options =>
+        services.AddDbContext<HonestProjectContext>(options =>
             options.UseSqlServer(connection));
 
             services.AddScoped<ISiteRepository, SiteRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<IPasswordHashUtility, PasswordHashUtility>();
+            services.AddScoped<IJwtUtilities, JwtUtilities>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+        app.UseAuthentication();
+
+        app.Use(async (context, next) =>
         {
-            app.UseAuthentication();
-
-            app.Use(async (context, next) =>
+            await next();
+            if (context.Response.StatusCode == 404 &&
+            !Path.HasExtension(context.Request.Path.Value) &&
+            !context.Request.Path.Value.StartsWith("/api/"))
             {
+                context.Request.Path = "/index.html";
                 await next();
-                if (context.Response.StatusCode == 404 &&
-                !Path.HasExtension(context.Request.Path.Value) &&
-                !context.Request.Path.Value.StartsWith("/api/"))
-                {
-                    context.Request.Path = "/index.html";
-                    await next();
-                }
-            });
+            }
+        });
 
-            app.UseMvcWithDefaultRoute();
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-        }
+        app.UseMvcWithDefaultRoute();
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
     }
+}
 }

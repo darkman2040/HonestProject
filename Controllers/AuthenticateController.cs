@@ -23,12 +23,14 @@ namespace HonestProject.Controllers
         HonestProjectContext _context;
         IConfiguration _configuration;
         IPasswordHashUtility hashUtility;
+        IJwtUtilities jwtUtilities;
 
-        public AuthenticateController(HonestProjectContext context, IConfiguration configuration, IPasswordHashUtility hashUtility)
+        public AuthenticateController(HonestProjectContext context, IConfiguration configuration, IPasswordHashUtility hashUtility, IJwtUtilities jwtUtilities)
         {
             _context = context;
             _configuration = configuration;
             this.hashUtility = hashUtility;
+            this.jwtUtilities = jwtUtilities;
         }
 
         // POST api/authenticate
@@ -44,23 +46,35 @@ namespace HonestProject.Controllers
                 return new ObjectResult(response);
             }
 
-            if(!hashUtility.CheckMatch(user.PasswordHash, request.password))
+            if (!hashUtility.CheckMatch(user.PasswordHash, request.password))
             {
                 return new ObjectResult(response);
             }
-            var claims = new[] { new Claim(ClaimTypes.Name, request.username), new Claim(ClaimTypes.Role, user.Role.Name) };
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["SecurityKey"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(
-            issuer: "yourdomain.com",
-            audience: "yourdomain.com",
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(90),
-            signingCredentials: creds);
-            response.token = new JwtSecurityTokenHandler().WriteToken(token);
+            response.token = jwtUtilities.GenereateJwtToken(user);
             response.userId = user.PublicIdentifier;
+            if (request.getRefreshToken)
+            {
+                response.refreshToken = jwtUtilities.GenerateRefreshToken(user);
+                user.RefreshTokenList = response.refreshToken;
+                this._context.User.Update(user);
+                this._context.SaveChanges();
+            }
             return new ObjectResult(response);
         }
 
+        [AllowAnonymous]
+        [HttpPost("tokens/{refreshToken}/refresh")]
+        public IActionResult RefreshAccessToken(string refreshToken)
+        {
+            DataModels.User user = this._context.User.Include(x => x.Role).Where(x => x.RefreshTokenList == refreshToken).FirstOrDefault();
+            if(user == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return new ObjectResult(new RefreshResponse(jwtUtilities.GenereateJwtToken(user)));
+            }
+        }
     }
 }

@@ -43,8 +43,7 @@ const appRoutes: Routes = [
     LandingPageModule,
     LoginModule,
     RouterModule.forRoot(
-      appRoutes,
-      {enableTracing: true}
+      appRoutes
     )
   ],
   providers: [AuthGuard,
