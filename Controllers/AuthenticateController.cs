@@ -55,7 +55,8 @@ namespace HonestProject.Controllers
             if (request.getRefreshToken)
             {
                 response.refreshToken = jwtUtilities.GenerateRefreshToken(user);
-                user.RefreshTokenList = response.refreshToken;
+                user.RefreshToken = response.refreshToken;
+                user.RefreshTokenExpiration = DateTime.Now.AddMonths(3);
                 this._context.User.Update(user);
                 this._context.SaveChanges();
             }
@@ -66,8 +67,12 @@ namespace HonestProject.Controllers
         [HttpPost("tokens/{refreshToken}/refresh")]
         public IActionResult RefreshAccessToken(string refreshToken)
         {
-            DataModels.User user = this._context.User.Include(x => x.Role).Where(x => x.RefreshTokenList == refreshToken).FirstOrDefault();
+            DataModels.User user = this._context.User.Include(x => x.Role).Where(x => x.RefreshToken == refreshToken).FirstOrDefault();
             if(user == null)
+            {
+                return BadRequest();
+            }
+            else if(user.RefreshTokenExpiration < DateTime.Now)
             {
                 return BadRequest();
             }

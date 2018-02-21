@@ -26,6 +26,7 @@ namespace HonestProject.DataModels {
         public Site Site{get; set;}
         [Required]
         public Guid PublicIdentifier {get; set;}
-        public string RefreshTokenList{get; set;}
+        public string RefreshToken{get; set;}
+        public DateTime RefreshTokenExpiration{get; set;}
     }
 }
