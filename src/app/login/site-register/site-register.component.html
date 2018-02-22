@@ -1,0 +1,28 @@
+<div class="site-content">
+  <div class="site-header">
+    <h1>Welcome to Honest Project!</h1>
+  </div>
+  <div class="site-header">
+    <h3>Please register the site</h3>
+  </div>
+  <div>
+    <form #registerForm="ngForm" class="site-body" >
+
+      <mat-form-field hint="My Company Name">
+        <input matInput id="name" placeholder="Company Name" name="name" required maxLength="50" [(ngModel)]="registerSite.name" #name="ngModel">
+        <mat-error *ngIf="name.errors?.required">Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field hint="ex. mysite">
+        <input matInput [(ngModel)]="registerSite.uniqueSiteId" placeholder="newSiteId" name="uniqueSiteId" maxLength="50" required>
+        <span matSuffix>@HonestProject.com</span>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [(ngModel)]="registerSite.hoursPerDay" placeholder="Number of hours per day" name="hoursPerDay" required>
+      </mat-form-field>
+      <mat-checkbox [(ngModel)]="registerSite.includeWeekends" name="includeWeekends">Include weekends</mat-checkbox>
+      <button mat-raised-button [disabled]="loading || !registerForm.valid" color="primary" type="button" (click)="onSubmit()" >Register</button>
+    </form>
+  </div>
+</div>

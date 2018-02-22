@@ -1,0 +1,28 @@
+.add-new-team-description {
+    width:350px;
+}
+
+.add-new-team-radio-group {
+    display: inline-flex;
+    flex-direction: column;
+  }
+
+  .add-new-team-toggle {
+    margin: 5px;
+  }
+  
+  .add-new-team-radio-button {
+    margin: 5px;
+  }
+  
+  .add-new-team-selected-value {
+    margin: 15px 0;
+  }
+
+  .add-new-team-userList {
+    margin: 5px;
+    padding: 5px;
+    height: 250px;
+    overflow-y: auto;
+  }
+

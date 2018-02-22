@@ -1,0 +1,29 @@
+.register-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+  }
+
+  .register-body {
+      display:flex;
+      flex-direction: column;
+      padding: 6%;
+      max-width: 600px;
+      margin: 0 auto
+      
+  }
+
+  .register-header{
+      padding: 0;
+      text-align: center;
+  }
+
+  .register-content {
+    display: flex;
+    flex-direction: column;
+  }

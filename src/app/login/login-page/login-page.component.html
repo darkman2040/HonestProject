@@ -1,0 +1,29 @@
+<mat-grid-list cols="3" class="login-container">
+
+    <mat-grid-tile></mat-grid-tile>
+<mat-grid-tile >
+  <div class="login-content">
+      <div class="login-header">
+          <h1>Welcome to Honest Project!</h1>
+      </div>
+    <div class="login-header">
+        <h3>Please login</h3>
+    </div>
+    <div >
+      <form #loginForm="ngForm" class="login-body" (submit)="onSubmit()"> 
+        <mat-form-field >
+            <input matInput [(ngModel)]="username" placeholder="Email" name="username" required>
+          </mat-form-field>
+          <mat-form-field >
+              <input matInput [(ngModel)]="password" placeholder="Password" name="password" [type]="hide ? 'password' : 'text'" required>
+              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </mat-form-field>
+            <mat-checkbox [(ngModel)]="getRefreshToken" name="getRefreshToken">Remember me</mat-checkbox>
+        <button mat-raised-button [disabled]="loading" color="primary" type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+</mat-grid-tile>
+<mat-grid-tile></mat-grid-tile>
+    
+</mat-grid-list>

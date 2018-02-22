@@ -1,30 +1,38 @@
-import { NgModule }             from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LandingPageComponent }from './landing-page/landing-page.component';
-import { DashboardComponent }    from '../screens/dashboard/dashboard.component';
-import {TimeSheetComponent} from '../screens/time-sheet/time-sheet.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { DashboardComponent } from '../screens/dashboard/dashboard.component';
+import { TimeSheetComponent } from '../screens/time-sheet/time-sheet.component';
+import { TeamManagementComponent } from '../screens/team-management/team-management.component'
 
-import {AuthGuard} from '../login/_guards/auth.guard'
+import { AuthGuard } from '../login/_guards/auth.guard'
 
 const screensRoutes: Routes = [
-  { path: 'landing-page',  
-  component: LandingPageComponent, 
-  children: [
-    {
-      path: '',
-      component: DashboardComponent
-    },
-    {
-      path: 'dashboard',
-      component: DashboardComponent
-    },
-    {
-      path: 'time-sheet',
-      component: TimeSheetComponent
-    }
-    
-  ]
+  {
+    path: 'landing-page',
+    component: LandingPageComponent,
+    children: [
+      {
+        path: '',
+        component: DashboardComponent
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      },
+      {
+        path: 'time-sheet',
+        component: TimeSheetComponent
+      },
+      {
+        path: 'team-management',
+        component: TeamManagementComponent,
+      }
+      
+
+    ],
+    canActivate: [AuthGuard]
   }
 ];
 
