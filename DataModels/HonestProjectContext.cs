@@ -17,6 +17,12 @@ namespace HonestProject.DataModels
         public DbSet<HonestProject.DataModels.Site> Site { get; set; }
         public DbSet<HonestProject.DataModels.Team> Team { get; set; }
         public DbSet<HonestProject.DataModels.TimeEntry> TimeEntry { get; set; }
+        public DbSet<HonestProject.DataModels.WorkType> WorkType { get; set; }
+        public DbSet<HonestProject.DataModels.Project> Project { get; set; }
+        public DbSet<HonestProject.DataModels.ProjectWorkType> ProjectWorkType { get; set; }
+        public DbSet<HonestProject.DataModels.ProjectTemplate> ProjectTemplate { get; set; }
+        public DbSet<HonestProject.DataModels.ProjectTemplateWorkType> ProjectTemplateWorkType { get; set; }
+        public DbSet<HonestProject.DataModels.TimePercentageUserProjectWorkType> TimePercentageUserProjectWorkType { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +37,11 @@ namespace HonestProject.DataModels
             modelBuilder.Entity<Team>()
             .HasOne(t => t.TeamManager)
             .WithMany();
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
 
         }
     }

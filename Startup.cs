@@ -15,6 +15,7 @@ using HonestProject.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using HonestProject.Utilities;
+using HonestProject.Converters;
 
 namespace HonestProject
 {
@@ -48,7 +49,7 @@ namespace HonestProject
 
             services.AddMvc();
 
-            var connection = @"Server=COLIN-PC\SQLEXPRESS;Database=HonestProject;Trusted_Connection=True;";
+            var connection = @"Server=(localdb)\MSSQLLocalDB;Database=HonestProject;Trusted_Connection=True;";
         services.AddDbContext<HonestProjectContext>(options =>
             options.UseSqlServer(connection));
 
@@ -57,6 +58,8 @@ namespace HonestProject
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<IPasswordHashUtility, PasswordHashUtility>();
             services.AddScoped<IJwtUtilities, JwtUtilities>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IProjectConverter, ProjectConverter>();
         }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
