@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Team } from '../models/Team'
 import {RegisterTeam} from '../models/RegisterTeam'
+import { EditTeam } from '../models/EditTeam';
 
 @Injectable()
 export class TeamService {
@@ -18,7 +19,20 @@ export class TeamService {
     public RegisterNewTeam(team: RegisterTeam): Observable<boolean> {
         return this.http.post<RegisterTeamResponse>('api/team/', team)
             .map((response: RegisterTeamResponse) => {
-                console.log(JSON.stringify(response))
+                if (response && response.id) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            })
+            .catch((e: any) => Observable.throw(this.errorHandler(e)));
+            
+    }
+
+    public EditTeam(team: EditTeam): Observable<boolean> {
+        return this.http.post<RegisterTeamResponse>('api/team/update', team)
+            .map((response: RegisterTeamResponse) => {
                 if (response && response.id) {
                     return true;
                 }

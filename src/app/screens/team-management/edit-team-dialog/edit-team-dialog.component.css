@@ -1,0 +1,19 @@
+.edit-team-userList {
+    margin: 5px;
+    padding: 5px;
+    height: 250px;
+    overflow-y: auto;
+  }
+
+  .edit-team-toggle {
+    margin: 5px;
+  }
+  
+  .edit-team-radio-button {
+    margin: 5px;
+  }
+
+  .edit-team-radio-group {
+    display: inline-flex;
+    flex-direction: column;
+  }

@@ -5,5 +5,6 @@ export class Team {
         public name: string,
         public description: string,
         public teamLeaderId: string,
+        public teamManagerId: string,
     public teamMembers: TeamMember[]) { }
 }

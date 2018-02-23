@@ -4,10 +4,8 @@ using System.Linq;
 
 namespace HonestProject.ViewModels
 {
-    public class TeamMember
+    public class EditTeamMember
     {
-        public string Name {get; set;}
-        public string Role {get; set;}
         public Guid Id {get; set;}
     }
 }

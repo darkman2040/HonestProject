@@ -4,6 +4,7 @@ import { TeamService } from '../../landingPage/_services/teamService'
 import { Team } from '../../landingPage/models/Team'
 import { TeamMember } from '../../landingPage/models/TeamMember'
 import { AddNewTeamDialogComponent} from './add-new-team-dialog/add-new-team-dialog.component'
+import { EditTeamDialogComponent } from './edit-team-dialog/edit-team-dialog.component';
 
 @Component({
   selector: 'app-team-management',
@@ -47,6 +48,18 @@ export class TeamManagementComponent implements OnInit {
           this.loading = false;
         }
       )
+  }
+
+  onEdit(event : any, team: Team){
+    event.stopPropagation();
+    let dialogRef = this.dialog.open(EditTeamDialogComponent,
+    {
+      data: {team: team}
+    });
+    dialogRef.afterClosed()
+    .subscribe(result => {
+      this.loadTeams();
+    })
   }
 
 }

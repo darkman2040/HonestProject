@@ -1,0 +1,28 @@
+<div>
+  <h2>Edit {{editTeam.name}} Team</h2>
+  <form #editTeamForm="ngForm">
+    <mat-form-field>
+      <input matInput placeholder="Team name" [(ngModel)]="editTeam.name" name="name" required>
+    </mat-form-field>
+    <mat-form-field class="edit-team-description">
+      <textarea matInput placeholder="A brief description of the team's responsibilities" [(ngModel)]="editTeam.description" name="description" required></textarea>
+    </mat-form-field>
+    <div class="edit-team-userList">
+      <h3>Select Team Members</h3>
+      <div *ngFor="let user of userList">
+        <mat-slide-toggle class="edit-team-toggle" (click)="onSelect(user)" [checked]="user.isSelected">{{user.name}}</mat-slide-toggle>
+      </div>
+    </div>
+    <div class="edit-team-userList">
+      <h3>Select Team Leader</h3>
+      <mat-radio-group class="edit-team-radio-group" [(ngModel)]="teamLeader" name="selectedLeader">
+        <mat-radio-button class="edit-team-radio-button" *ngFor="let user of selectedUsers" [value]="user">
+          {{user.name}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div>
+        <button mat-button [disabled]="(!editTeamForm.valid) || teamLeader == null" (click)="onSubmit()">Submit</button>
+    </div>
+  </form>
+</div>

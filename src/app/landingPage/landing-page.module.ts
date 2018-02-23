@@ -18,6 +18,7 @@ import { TeamService } from './_services/teamService'
 
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { AddNewTeamDialogComponent } from '../screens/team-management/add-new-team-dialog/add-new-team-dialog.component';
+import { EditTeamDialogComponent } from '../screens/team-management/edit-team-dialog/edit-team-dialog.component';
 
 
 @NgModule({
@@ -35,11 +36,12 @@ import { AddNewTeamDialogComponent } from '../screens/team-management/add-new-te
     ProjectViewerComponent,
     TimeSheetComponent,
     TeamManagementComponent,
-    AddNewTeamDialogComponent
+    AddNewTeamDialogComponent,
+    EditTeamDialogComponent
   ],
   providers: [UserService,
     TeamService
   ],
-  entryComponents: [AddNewTeamDialogComponent]
+  entryComponents: [AddNewTeamDialogComponent, EditTeamDialogComponent]
 })
 export class LandingPageModule { }

@@ -55,7 +55,7 @@ namespace HonestProject.Data
                 new User() { Site = site, FirstName = "Garrett", LastName = "Thomas", CreatedDate = DateTime.Now, PasswordHash = utility.CalculateHash("fakepassword"), EmailAddress = "garrett@b.c", PublicIdentifier = Guid.NewGuid(), Role = teamMember },
                 new User() { Site = site, FirstName = "Rebecca", LastName = "Garcia", CreatedDate = DateTime.Now, PasswordHash = utility.CalculateHash("fakepassword"), EmailAddress = "rebecca@b.c", PublicIdentifier = Guid.NewGuid(), Role = teamLeader },
                 new User() { Site = site, FirstName = "Kris", LastName = "Doer", CreatedDate = DateTime.Now, PasswordHash = utility.CalculateHash("fakepassword"), EmailAddress = "kris@b.c", PublicIdentifier = Guid.NewGuid(), Role = manager }
-                
+
             };
 
             foreach (User s in users)
@@ -65,14 +65,16 @@ namespace HonestProject.Data
             context.SaveChanges();
 
             User leader = context.User.Where(x => x.EmailAddress == "rebecca@b.c").FirstOrDefault();
-            User userManager = context.User.Where (x => x.EmailAddress == "kris@b.c").FirstOrDefault();
+            User userManager = context.User.Where(x => x.EmailAddress == "kris@b.c").FirstOrDefault();
 
-            var team = new Team {Site = site, Name = "Picante", PublicIdentifier = Guid.NewGuid(), TeamLeader = leader, TeamManager = userManager, Description = "Responsible for everything important",TeamMembers = new System.Collections.Generic.List<User>()};
+            var team = new Team { Site = site, Name = "Picante", PublicIdentifier = Guid.NewGuid(), TeamLeader = leader, TeamManager = userManager, Description = "Responsible for everything important", TeamMembers = new System.Collections.Generic.List<User>() };
             User kevin = context.User.Where(x => x.EmailAddress == "kevin@b.c").FirstOrDefault();
             User osama = context.User.Where(x => x.EmailAddress == "osama@b.c").FirstOrDefault();
             team.TeamMembers.Add(leader);
             team.TeamMembers.Add(kevin);
             team.TeamMembers.Add(osama);
+            team.TeamMembers.Add(users[0]);
+            team.TeamMembers.Add(users[1]);
             context.Team.Add(team);
             context.SaveChanges();
 
@@ -83,17 +85,17 @@ namespace HonestProject.Data
                 new WorkType() {Name = "Deployment",  PublicIdentifier = Guid.NewGuid()}
             };
 
-            foreach(WorkType type in workTypes)
+            foreach (WorkType type in workTypes)
             {
                 context.WorkType.Add(type);
             }
             context.SaveChanges();
-            
+
             ProjectTemplate template = new ProjectTemplate();
             template.Name = "New Application";
             template.WorkTypes = new List<ProjectTemplateWorkType>();
             template.PublicIdentifier = Guid.NewGuid();
-            foreach(var type in workTypes)
+            foreach (var type in workTypes)
             {
                 ProjectTemplateWorkType projType = new ProjectTemplateWorkType();
                 projType.WorkType = type;
@@ -120,7 +122,7 @@ namespace HonestProject.Data
                 new ProjectWorkType() {WorkType = workTypes[3], ManHours = 60, PublicIdentifier = Guid.NewGuid()}
             };
 
-            foreach(var type in projectItems)
+            foreach (var type in projectItems)
             {
                 project.WorkTypeItems.Add(type);
             }
@@ -128,6 +130,7 @@ namespace HonestProject.Data
             context.Project.Add(project);
             context.SaveChanges();
 
+/* 
             var timePct = new TimePercentageUserProjectWorkType[] {
                 //Planning
                 new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], TeamMember = users[5], WorkPercentage = 75},
@@ -152,10 +155,11 @@ namespace HonestProject.Data
                 new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], TeamMember = users[3], WorkPercentage = 5},
             };
 
-            foreach(var time in timePct)
+            foreach (var time in timePct)
             {
                 context.TimePercentageUserProjectWorkType.Add(time);
             }
+            */
 
             context.SaveChanges();
 

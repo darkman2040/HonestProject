@@ -38,10 +38,10 @@ namespace HonestProject.DataModels
             .HasOne(t => t.TeamManager)
             .WithMany();
 
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-            {
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
-            }
+            modelBuilder.Entity<TimePercentageUserProjectWorkType>()
+            .HasOne(x => x.TeamMember)
+            .WithOne()
+            .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

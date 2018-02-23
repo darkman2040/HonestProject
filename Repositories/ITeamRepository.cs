@@ -9,5 +9,6 @@ namespace HonestProject.Repositories {
     {
         ViewModels.Team[] GetManagedTeams(string userName);
         ViewModels.Team Save(ViewModels.RegisterTeam newTeam, string userName);
+        ViewModels.Team Update(ViewModels.EditTeam editTeam, string userName);
     }
 }
