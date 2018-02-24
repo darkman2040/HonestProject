@@ -1,0 +1,72 @@
+<div class="project-management-container">
+  <mat-card>
+    <mat-card-title>
+      <div class="project-management-title">Projects
+        <span class="project-management-spacer"></span>
+        <button mat-mini-fab color="primary" (click)="addNewTeam()">
+          <mat-icon aria-label="Icon to add new team">add</mat-icon>
+        </button>
+      </div>
+    </mat-card-title>
+    <mat-card-subtitle>The list of projects for team </mat-card-subtitle>
+    <mat-card-content>
+      <mat-accordion *ngIf="!this.loading && this.projects.length > 0">
+        <mat-expansion-panel *ngFor="let project of projects">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="project-management-panel-header-title">
+              {{project.name}} Team
+            </mat-panel-title>
+            <mat-panel-description class="project-management-panel-header-description">
+              <div>
+                {{project.description}}
+              </div>
+              <mat-icon aria-label="Icon to edit a project" (click)="onEdit($event, team)">edit</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let workType of project.workTypes; let index = index">
+              <mat-expansion-panel-header>
+                <mat-panel-title class="project-management-panel-header-title">
+                  {{workType.name}}
+                </mat-panel-title>
+                <mat-panel-description class="project-management-panel-header-description">
+                  <div>
+                    {{workType.workPct}}%
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <mat-table #table [dataSource]="workType.userWorkList">
+
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.lastName}}, {{element.firstName}} </mat-cell>
+                  </ng-container>
+      
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="pct">
+                    <mat-header-cell *matHeaderCellDef> Pct. </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.workPct}} </mat-cell>
+                  </ng-container>
+      
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+      <div *ngIf="this.loading" class="project-management-loading">
+        <div>
+          <mat-spinner></mat-spinner>
+        </div>
+        <div class="project-management-loading-text">Loading.....</div>
+      </div>
+      <div *ngIf="!this.loading && this.projects.length == 0">
+        There are no projects for this team. Click the '+' button to create a project.
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

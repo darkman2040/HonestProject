@@ -1,0 +1,38 @@
+.project-management-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+.project-management-title {
+    display: flex;
+    flex-direction: row;
+}
+
+.project-management-spacer {
+    flex: 1 1 auto;
+  }
+
+.project-management-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+.project-management-panel-header-title, 
+.project-management-panel-header-description {
+  flex-basis: 0;
+}
+
+.project-management-loading {
+  display: flex;
+  flex-direction: row;
+}
+
+.project-management-loading-text {
+  margin-top: 40px;
+  margin-left: 25px;
+}

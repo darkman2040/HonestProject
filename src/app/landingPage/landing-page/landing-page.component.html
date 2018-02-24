@@ -13,6 +13,7 @@
       <mat-nav-list>
         <a mat-list-item routerLink="./dashboard">Dashboard<mat-divider></mat-divider></a>
         <a mat-list-item routerLink="./time-sheet">Timesheet<mat-divider></mat-divider></a>
+        <a *ngIf="user?.isTeamLeader" mat-list-item routerLink="./project-management">Project Management<mat-divider></mat-divider></a>
         <a *ngIf="user?.isSiteAdmin || user?.isManager" mat-list-item routerLink="./team-management">Team Management<mat-divider></mat-divider></a>
       </mat-nav-list>
     </mat-sidenav>

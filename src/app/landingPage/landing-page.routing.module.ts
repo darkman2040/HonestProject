@@ -7,6 +7,7 @@ import { TimeSheetComponent } from '../screens/time-sheet/time-sheet.component';
 import { TeamManagementComponent } from '../screens/team-management/team-management.component'
 
 import { AuthGuard } from '../login/_guards/auth.guard'
+import { ProjectManagementComponent } from '../screens/project-managerment/project-management.component';
 
 const screensRoutes: Routes = [
   {
@@ -28,6 +29,10 @@ const screensRoutes: Routes = [
       {
         path: 'team-management',
         component: TeamManagementComponent,
+      },
+      {
+        path: 'project-management',
+        component: ProjectManagementComponent,
       }
       
 
