@@ -39,8 +39,11 @@ namespace HonestProject.DataModels
             .WithMany();
 
             modelBuilder.Entity<TimePercentageUserProjectWorkType>()
-            .HasOne(x => x.TeamMember)
-            .WithOne()
+            .HasKey(x => x.ID);
+
+            modelBuilder.Entity<TimePercentageUserProjectWorkType>()
+            .HasOne(x => x.User)
+            .WithMany()
             .OnDelete(DeleteBehavior.Restrict);
 
         }

@@ -109,6 +109,7 @@ namespace HonestProject.Data
             Project project = new Project();
             project.Color = "green";
             project.Name = "Adv. Search Web";
+            project.Description = "Dumpster Fire PR Project";
             project.OwningTeam = team;
             project.PercentageEstimate = 50;
             project.PublicIdentifier = Guid.NewGuid();
@@ -130,36 +131,35 @@ namespace HonestProject.Data
             context.Project.Add(project);
             context.SaveChanges();
 
-/* 
+
             var timePct = new TimePercentageUserProjectWorkType[] {
                 //Planning
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], TeamMember = users[5], WorkPercentage = 75},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], TeamMember = users[4], WorkPercentage = 25},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], TeamMember = users[0], WorkPercentage = 15},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], TeamMember = users[1], WorkPercentage = 15},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], User = users[5], WorkPercentage = 75, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], User = users[4], WorkPercentage = 25, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], User = users[0], WorkPercentage = 15, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], User = users[1], WorkPercentage = 15, PublicIdentifier=Guid.NewGuid()},
 
                 //Development
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], TeamMember = users[0], WorkPercentage = 75},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], TeamMember = users[1], WorkPercentage = 75},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], TeamMember = users[2], WorkPercentage = 95},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], TeamMember = users[3], WorkPercentage = 95},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[0], WorkPercentage = 75, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[1], WorkPercentage = 75, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[2], WorkPercentage = 95, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[3], WorkPercentage = 95, PublicIdentifier=Guid.NewGuid()},
 
                 //Testing
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[2], TeamMember = users[5], WorkPercentage = 25},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[2], TeamMember = users[4], WorkPercentage = 75},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[2], User = users[5], WorkPercentage = 25, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[2], User = users[4], WorkPercentage = 75, PublicIdentifier=Guid.NewGuid()},
 
                 //Deployment
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], TeamMember = users[0], WorkPercentage = 10},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], TeamMember = users[1], WorkPercentage = 10},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], TeamMember = users[2], WorkPercentage = 5},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], TeamMember = users[3], WorkPercentage = 5},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[0], WorkPercentage = 10, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[1], WorkPercentage = 10, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[2], WorkPercentage = 5, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[3], WorkPercentage = 5, PublicIdentifier=Guid.NewGuid()},
             };
 
             foreach (var time in timePct)
             {
                 context.TimePercentageUserProjectWorkType.Add(time);
             }
-            */
 
             context.SaveChanges();
 

@@ -11,6 +11,9 @@ namespace HonestProject.DataModels
         [Required]
         [StringLength(50)]
         public string Name {get; set;}
+        [Required]
+        [StringLength(200)]
+        public string Description{get; set;}
         public DateTime StartDate {get; set;}
         public int PercentageEstimate {get; set;}
         [Required]
