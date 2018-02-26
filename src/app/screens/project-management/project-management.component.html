@@ -3,8 +3,8 @@
     <mat-card-title>
       <div class="project-management-title">Projects
         <span class="project-management-spacer"></span>
-        <button mat-mini-fab color="primary" (click)="addNewTeam()">
-          <mat-icon aria-label="Icon to add new team">add</mat-icon>
+        <button mat-mini-fab color="primary" (click)="addNewProject()">
+          <mat-icon aria-label="Icon to add new project">add</mat-icon>
         </button>
       </div>
     </mat-card-title>
@@ -31,7 +31,7 @@
                 </mat-panel-title>
                 <mat-panel-description class="project-management-panel-header-description">
                   <div>
-                    {{workType.workPct}}%
+                    {{workType.manHours}} hours
                   </div>
                 </mat-panel-description>
               </mat-expansion-panel-header>
@@ -47,7 +47,7 @@
                   <!-- Name Column -->
                   <ng-container matColumnDef="pct">
                     <mat-header-cell *matHeaderCellDef> Pct. </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.workPct}} </mat-cell>
+                    <mat-cell *matCellDef="let element"> {{element.workPercentage}}% </mat-cell>
                   </ng-container>
       
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

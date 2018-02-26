@@ -29,5 +29,18 @@ namespace HonestProject.Controllers
 
             return new ObjectResult(projects);
         }
+        
+        [HttpGet("GetProjectTemplatesTopLevel")]
+        [Authorize(Roles = "Site Administrator,Manager,Team Leader")]
+        public IActionResult GetProjectTemplates()
+        {
+            ViewModels.ProjectTemplateTopLevel[] templates = repository.GetProjectTemplates(this.HttpContext.User.Identity.Name);
+            if(repository.ErrorDetected)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return new ObjectResult(templates);
+        }
     }
 }

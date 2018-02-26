@@ -19,7 +19,9 @@ import { TeamService } from './_services/teamService'
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { AddNewTeamDialogComponent } from '../screens/team-management/add-new-team-dialog/add-new-team-dialog.component';
 import { EditTeamDialogComponent } from '../screens/team-management/edit-team-dialog/edit-team-dialog.component';
-import { ProjectManagementComponent } from '../screens/project-managerment/project-management.component';
+import { ProjectManagementComponent } from '../screens/project-management/project-management.component';
+import { ProjectService } from './_services/projectService';
+import { AddProjectDialogComponent } from '../screens/project-management/add-project-dialog/add-project-dialog.component';
 
 
 @NgModule({
@@ -39,11 +41,13 @@ import { ProjectManagementComponent } from '../screens/project-managerment/proje
     TeamManagementComponent,
     AddNewTeamDialogComponent,
     EditTeamDialogComponent,
-    ProjectManagementComponent
+    ProjectManagementComponent,
+    AddProjectDialogComponent
   ],
   providers: [UserService,
-    TeamService
+    TeamService,
+    ProjectService
   ],
-  entryComponents: [AddNewTeamDialogComponent, EditTeamDialogComponent]
+  entryComponents: [AddNewTeamDialogComponent, EditTeamDialogComponent, AddProjectDialogComponent]
 })
 export class LandingPageModule { }

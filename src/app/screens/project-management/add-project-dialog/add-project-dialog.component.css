@@ -1,0 +1,23 @@
+.add-new-project-description {
+    width:350px;
+}
+
+.add-new-project-radio-group {
+    display: inline-flex;
+    flex-direction: column;
+  }
+
+  .add-new-project-toggle {
+    margin: 5px;
+  }
+  
+  .add-new-project-radio-button {
+    margin: 5px;
+  }
+
+  .add-new-project-template-list {
+    margin: 5px;
+    padding: 5px;
+    height: 250px;
+    overflow-y: auto;
+  }

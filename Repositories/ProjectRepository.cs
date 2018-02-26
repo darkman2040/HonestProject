@@ -15,10 +15,12 @@ namespace HonestProject.Repositories
     {
         private HonestProjectContext context;
         private IProjectConverter converter;
-        public ProjectRepository(HonestProjectContext context, IProjectConverter converter)
+        IProjectTemplateConverter projectTemplateConverter;
+        public ProjectRepository(HonestProjectContext context, IProjectConverter converter, IProjectTemplateConverter projectTemplateConverter)
         {
             this.context = context;
             this.converter = converter;
+            this.projectTemplateConverter = projectTemplateConverter;
         }
         public ViewModels.Project[] GetProjectsForTeam(string userId)
         {
@@ -37,6 +39,21 @@ namespace HonestProject.Repositories
             foreach(var project in list)
             {
                 viewList.Add(converter.ConvertToViewProject(project));
+            }
+
+            return viewList.ToArray();
+        }
+
+        public ViewModels.ProjectTemplateTopLevel[] GetProjectTemplates(string userId)
+        {
+            DataModels.User user = this.context.User.Include(x => x.Role)
+            .Include(x => x.Team)
+            .Where(x => x.EmailAddress == userId).FirstOrDefault();
+            List<DataModels.ProjectTemplate> list = this.context.ProjectTemplate.ToList();
+            List<ViewModels.ProjectTemplateTopLevel> viewList = new List<ProjectTemplateTopLevel>();
+            foreach(var template in list)
+            {
+                viewList.Add(projectTemplateConverter.ConvertToTopLevelViewModel(template));
             }
 
             return viewList.ToArray();

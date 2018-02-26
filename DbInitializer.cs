@@ -150,10 +150,10 @@ namespace HonestProject.Data
                 new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[2], User = users[4], WorkPercentage = 75, PublicIdentifier=Guid.NewGuid()},
 
                 //Deployment
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[0], WorkPercentage = 10, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[1], WorkPercentage = 10, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[2], WorkPercentage = 5, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[3], WorkPercentage = 5, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[3], User = users[0], WorkPercentage = 10, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[3], User = users[1], WorkPercentage = 10, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[3], User = users[2], WorkPercentage = 5, PublicIdentifier=Guid.NewGuid()},
+                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[3], User = users[3], WorkPercentage = 5, PublicIdentifier=Guid.NewGuid()},
             };
 
             foreach (var time in timePct)
