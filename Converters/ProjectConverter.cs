@@ -16,6 +16,7 @@ namespace HonestProject.Converters
         public ViewModels.Project ConvertToViewProject(DataModels.Project project)
         {
             DataModels.Project dbProject = this.context.Project
+            .Include(x => x.OwningTeam)
             .Include(x => x.WorkTypeItems)
             .ThenInclude(y => y.WorkType)
             .FirstOrDefault();
@@ -27,6 +28,7 @@ namespace HonestProject.Converters
             viewProject.Description = project.Description;
             viewProject.PercentageEstimate = project.PercentageEstimate;
             viewProject.StartDate = project.StartDate;
+            viewProject.TeamId = project.OwningTeam.PublicIdentifier;
             List<ViewModels.ProjectWorkType> workTypes = new List<ViewModels.ProjectWorkType>();
             foreach(var workType in dbProject.WorkTypeItems)
             {

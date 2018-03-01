@@ -38,7 +38,6 @@ export class AddNewTeamDialogComponent implements OnInit {
 
     this.userService.GetUnassignedUsers()
       .subscribe((list: User[]) => {
-        console.log(list);
         this.userList = list;
       });
 

@@ -9,6 +9,7 @@ namespace HonestProject.ViewModels
         public DateTime StartDate {get; set;}
         public int PercentageEstimate {get; set;}
         public string Color {get; set;}
+        public Guid TeamId {get; set;}
         public ProjectWorkType[] WorkTypes {get; set;}
     }
 }

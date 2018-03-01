@@ -19,4 +19,8 @@ export class UserService {
     public GetUnassignedUsers(): Observable<User[]> {
         return this.http.get<User[]>('api/user/unassigned'); 
     }
+
+    public GetTeamMembers(teamId: string): Observable<User[]> {
+        return this.http.get<User[]>('api/user/GetTeamMembers/' + teamId);
+    }
 }

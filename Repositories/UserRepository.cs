@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using HonestProject.Converters;
 using HonestProject.DataModels;
 using HonestProject.Utilities;
 using HonestProject.ViewModels;
@@ -16,12 +17,14 @@ namespace HonestProject.Repositories
         HonestProjectContext context;
         IConfiguration configuration;
         IPasswordHashUtility hashGenerator;
+        IUserConverter userConverter;
 
-        public UserRepository(HonestProjectContext context, IConfiguration configuration, IPasswordHashUtility hashGenerator)
+        public UserRepository(HonestProjectContext context, IConfiguration configuration, IPasswordHashUtility hashGenerator, IUserConverter userConverter)
         {
             this.context = context;
             this.configuration = configuration;
             this.hashGenerator = hashGenerator;
+            this.userConverter = userConverter;
         }
 
         public ViewModels.User GetUser(Guid id)
@@ -35,14 +38,7 @@ namespace HonestProject.Repositories
                 }
 
                 this.ValidationPassed();
-                ViewModels.User user = new ViewModels.User();
-                user.userId = dbUser.PublicIdentifier;
-                user.EmailAddress = dbUser.EmailAddress;
-                user.FirstName = dbUser.FirstName;
-                user.LastName = dbUser.LastName;
-                user.UserSite = dbUser.Site.PublicIdentifier;
-                SetSecurityParams(user, dbUser);
-                return user;
+                return this.userConverter.ConvertFromDbUser(dbUser);;
             }
             catch (Exception e)
             {
@@ -51,32 +47,7 @@ namespace HonestProject.Repositories
             }
         }
 
-        private void SetSecurityParams(ViewModels.User user, DataModels.User dbUser)
-        {
-            if (dbUser.Role.Name == "Site Administrator")
-            {
-                user.IsSiteAdmin = true;
-                user.IsManager = true;
-                user.IsTeamLeader = true;
-                return;
-            }
-
-            if (dbUser.Role.Name == "Manager")
-            {
-                user.IsSiteAdmin = false;
-                user.IsManager = true;
-                user.IsTeamLeader = true;
-                return;
-            }
-
-            if (dbUser.Role.Name == "Team Leader")
-            {
-                user.IsSiteAdmin = false;
-                user.IsManager = false;
-                user.IsTeamLeader = true;
-                return;
-            }
-        }
+        
 
         public ViewModels.User Save(ViewModels.RegisterUser user)
         {
@@ -192,6 +163,37 @@ namespace HonestProject.Repositories
             }
 
             return viewUsers.ToArray();
+        }
+
+        public ViewModels.User[] GetTeamMembers(Guid teamId, string userName)
+        {
+            DataModels.Team team = this.context.Team.Include(x => x.TeamMembers)
+            .Include(x => x.TeamLeader)
+            .Include(x => x.TeamManager).FirstOrDefault();
+
+            if(team == null)
+            {
+                this.ValidationFailed();
+                return null;
+            }
+
+            DataModels.User user = this.context.User.Where(x => x.EmailAddress == userName).FirstOrDefault();
+
+            if(team.TeamLeader != user && team.TeamManager != user)
+            {
+                this.ValidationFailed();
+                return null;
+            }
+
+            this.ValidationPassed();
+
+            List<ViewModels.User> list = new List<ViewModels.User>();
+            foreach(var teamUser in team.TeamMembers)
+            {
+                list.Add(this.userConverter.ConvertFromDbUser(teamUser));
+            }
+
+            return list.ToArray();
         }
     }
 }

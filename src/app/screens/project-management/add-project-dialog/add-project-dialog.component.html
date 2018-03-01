@@ -4,7 +4,7 @@
 <mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Name the project</ng-template>
+      <ng-template matStepLabel>Name project</ng-template>
       <mat-form-field>
         <input matInput placeholder="Project name" formControlName="firstCtrl" required>
       </mat-form-field>
@@ -15,7 +15,7 @@
   </mat-step>
   <mat-step [stepControl]="secondFormGroup">
     <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Describe the Project</ng-template>
+      <ng-template matStepLabel>Describe Project</ng-template>
       <mat-form-field class="add-new-project-description">
         <textarea matInput placeholder="A brief description of the project" formControlName="secondCtrl" required></textarea>
       </mat-form-field>
@@ -26,13 +26,34 @@
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Choose a template</ng-template>
+    <ng-template matStepLabel>Choose template</ng-template>
     <div class="add-new-project-template-list">
       <mat-radio-group class="add-new-project-radio-group" [(ngModel)]="selectedTemplate">
         <mat-radio-button class="add-new-project-radio-button" *ngFor="let template of projectTemplates" [value]="template" (change)="onSelectTemplate(template)">
           {{template.name}}
         </mat-radio-button>
       </mat-radio-group>
+    </div>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext [disabled]="selectedTemplate == null">Next</button>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Assign members</ng-template>
+    <div class="add-new-project-template-list">
+      <mat-sidenav-container class="add-new-project-sidenav-container">
+        <mat-sidenav mode="side" #timeNav opened position="end">
+          <div *ngFor="let userPct of pctUsers">
+            {{userPct.user.firstName}} {{userPct.pct}}%
+          </div>
+        </mat-sidenav>
+        <mat-sidenav-content>
+          <p>Content goes here</p>
+          <p>Content goes here</p>
+          <p>Content goes here</p>
+          <p>Content goes here</p>
+          <p>Content goes here</p>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
     </div>
     <button mat-button matStepperPrevious>Back</button>
     <button mat-button [disabled]="selectedTemplate == null" (click)="onSubmit()">Submit</button>

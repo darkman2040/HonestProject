@@ -35,6 +35,24 @@ namespace HonestProject.Controllers
             return new ObjectResult(users);
         }
 
+        [Authorize(Roles = "Site Administrator,Manager, Team Leader")]
+        [HttpGet("GetTeamMembers/{teamId}")]
+        public IActionResult GetTeamMembers(Guid teamId)
+        {
+            ViewModels.User[] users = this.userRepository.GetTeamMembers(teamId, this.HttpContext.User.Identity.Name);
+            if(!userRepository.ValidSubmission)
+            {
+                return BadRequest(teamId);
+            }
+
+            if(userRepository.ErrorDetected)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return new ObjectResult(users);
+        }
+
         [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)

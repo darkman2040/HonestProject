@@ -8,5 +8,6 @@ namespace HonestProject.Repositories
         User GetUser(Guid id);
         User[] GetUnassignedUsers(string userName);
         User Save(RegisterUser user);
+        User[] GetTeamMembers(Guid teamId, string userName);
     }
 }

@@ -16,6 +16,7 @@ export class ProjectManagementComponent implements OnInit {
   displayedColumns = ['name', 'pct'];
   projects: ViewProject[];
   loading: boolean = true;
+  teamId: string;
 
   constructor(
     public projectService: ProjectService,
@@ -32,8 +33,11 @@ export class ProjectManagementComponent implements OnInit {
     this.loading = true;
     this.projects = new Array<ViewProject>();
     this.projectService.GetProjects().subscribe(
-      (projects : Project[]) => {
+      (projects: Project[]) => {
         projects.forEach((project: Project) => {
+          if (projects) {
+            this.teamId = projects[0].teamId;
+          }
           let projWorkType = new Array<ViewProjectWorkType>();
           project.workTypes.forEach((workType: ProjectWorkType) => {
             projWorkType.push(new ViewProjectWorkType(workType.name, workType.manHours, new MatTableDataSource<TimePercentageUserProjectWorkType>(workType.userWorkList)));
@@ -47,14 +51,17 @@ export class ProjectManagementComponent implements OnInit {
   }
 
   addNewProject() {
-    let dialogRef = this.dialog.open(AddProjectDialogComponent);
+    let dialogRef = this.dialog.open(AddProjectDialogComponent,
+      {
+        data: { teamId: this.teamId }
+      });
     dialogRef.afterClosed()
-    .subscribe(result => {
-      this.loadProjects();
-    })
+      .subscribe(result => {
+        this.loadProjects();
+      })
   }
 
-  onEdit(event : any, team: Project){
+  onEdit(event: any, team: Project) {
     event.stopPropagation();
   }
 }
@@ -62,7 +69,7 @@ export class ProjectManagementComponent implements OnInit {
 export class ViewProjectWorkType {
   constructor(public name: string,
     public manHours: number,
-  public userWorkList: MatTableDataSource<TimePercentageUserProjectWorkType>) { }
+    public userWorkList: MatTableDataSource<TimePercentageUserProjectWorkType>) { }
 }
 
 export class ViewProject {

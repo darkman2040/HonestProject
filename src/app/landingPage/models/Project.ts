@@ -8,6 +8,7 @@ export class Project{
         public startDate: Date,
         public percentageEstimate: number,
         public color: string,
+        public teamId: string,
         public workTypes: ProjectWorkType[]
     ) {}
 }
