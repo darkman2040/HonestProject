@@ -58,5 +58,33 @@ namespace HonestProject.Repositories
 
             return viewList.ToArray();
         }
+
+        public ViewModels.ProjectTemplateWorkType[] GetProjectTemplateWorkType(Guid projectTemplateId, string userId)
+        {
+            DataModels.User user = this.context.User.Include(x => x.Role).Where(x => x.EmailAddress == userId).FirstOrDefault();
+
+            DataModels.ProjectTemplate projectTemplate = this.context.ProjectTemplate
+            .Include(x => x.WorkTypes)
+            .ThenInclude(x => x.WorkType)
+            .Where(x => x.PublicIdentifier == projectTemplateId).FirstOrDefault();
+
+            if(projectTemplate == null)
+            {   
+                this.ValidationFailed();
+                return null;
+            }
+
+            this.ValidationPassed();
+
+            List<ViewModels.ProjectTemplateWorkType> list = new List<ViewModels.ProjectTemplateWorkType>();
+            foreach(var workType in projectTemplate.WorkTypes)
+            {
+                ViewModels.ProjectTemplateWorkType projectType = new ViewModels.ProjectTemplateWorkType();
+                projectType.Name = workType.WorkType.Name;
+                list.Add(projectType);
+            } 
+
+            return list.ToArray();
+        }
     }
 }

@@ -18,7 +18,6 @@ namespace HonestProject.Converters
             DataModels.Project dbProject = this.context.Project
             .Include(x => x.OwningTeam)
             .Include(x => x.WorkTypeItems)
-            .ThenInclude(y => y.WorkType)
             .FirstOrDefault();
 
             ViewModels.Project viewProject = new ViewModels.Project();
@@ -34,7 +33,7 @@ namespace HonestProject.Converters
             {
                 ViewModels.ProjectWorkType viewWorkType = new ViewModels.ProjectWorkType();
                 viewWorkType.Id = workType.PublicIdentifier;
-                viewWorkType.Name = workType.WorkType.Name;
+                viewWorkType.Name = workType.Name;
                 viewWorkType.ManHours = workType.ManHours;
 
                 List<ViewModels.TimePercentageUserProjectWorkType> viewElements = new List<ViewModels.TimePercentageUserProjectWorkType>();

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Project } from '../models/Project'
 import { ProjectTemplateTopLevel } from '../models/ProjectTemplateTopLevel';
+import { ProjectTemplateWorkType } from '../models/ProjectTemplateWorkType';
 
 @Injectable()
 export class ProjectService {
@@ -16,5 +17,9 @@ export class ProjectService {
 
     public GetProjectTemplateTopLevel(): Observable<ProjectTemplateTopLevel[]> {
         return this.http.get<ProjectTemplateTopLevel[]>('api/project/GetProjectTemplatesTopLevel'); 
+    }
+
+    public GetProjectTemplateWorkTypes(projectTemplateId: string): Observable<ProjectTemplateWorkType[]> {
+        return this.http.get<ProjectTemplateWorkType[]>('api/project/GetProjectTemplateWorkItems/' + projectTemplateId);
     }
 }

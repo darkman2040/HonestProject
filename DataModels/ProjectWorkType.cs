@@ -10,7 +10,8 @@ namespace HonestProject.DataModels
         [Required]
         public Project Project {get; set;}
         [Required]
-        public WorkType WorkType {get; set;}
+        [StringLength(50)]
+        public string Name {get; set;}
         [Required]
         public int ManHours {get; set;}        
         [Required]

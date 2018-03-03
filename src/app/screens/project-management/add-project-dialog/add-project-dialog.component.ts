@@ -1,10 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ProjectTemplateTopLevel } from '../../../landingPage/models/ProjectTemplateTopLevel';
 import { ProjectService } from '../../../landingPage/_services/projectService';
 import { User } from '../../../landingPage/models/User';
 import { UserService } from '../../../landingPage/_services/userService';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { ProjectWorkTypeControlService } from './services/project-work-type-control.service';
+import { ProjectTemplateWorkType } from '../../../landingPage/models/ProjectTemplateWorkType';
+import { WorkTypeHours } from './models/work-type-hours';
 
 @Component({
   selector: 'app-add-project-dialog',
@@ -15,15 +18,20 @@ export class AddProjectDialogComponent implements OnInit {
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
+  workTypeFormGroup: FormGroup;
   projectTemplates: ProjectTemplateTopLevel[];
   selectedTemplate: ProjectTemplateTopLevel;
   pctUsers: UserPercent[];
+  workTypeControls: WorkTypeHours[];
+  projectTemplateWorkTypes: ProjectTemplateWorkType[]
 
 
   constructor(private _formBuilder: FormBuilder,
     private projectService: ProjectService,
     private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    private templateControlService: ProjectWorkTypeControlService,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
@@ -32,24 +40,50 @@ export class AddProjectDialogComponent implements OnInit {
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', [Validators.required, Validators.maxLength(200)]]
     });
+
+    this.workTypeFormGroup = new FormGroup({
+      fake: new FormControl()
+    });
+
     console.log(JSON.stringify(this.data.teamId));
     this.projectService.GetProjectTemplateTopLevel()
       .subscribe((templates: ProjectTemplateTopLevel[]) => {
         this.projectTemplates = templates;
       });
-      this.userService.GetTeamMembers(this.data.teamId)
+    this.userService.GetTeamMembers(this.data.teamId)
       .subscribe((users: User[]) => {
         this.pctUsers = new Array<UserPercent>();
-        users.forEach((user: User) =>{
+        users.forEach((user: User) => {
           this.pctUsers.push(new UserPercent(user, 0));
         });
       });
   }
 
   onSelectTemplate(template: ProjectTemplateTopLevel) {
-
+    this.selectedTemplate = template;
+    this.projectService.GetProjectTemplateWorkTypes(this.selectedTemplate.id)
+      .subscribe((projectTemplates: ProjectTemplateWorkType[]) => {
+        this.projectTemplateWorkTypes = projectTemplates;
+        this.workTypeControls = new Array<WorkTypeHours>();
+        projectTemplates.forEach((projectTemplate: ProjectTemplateWorkType) => {
+          let work = new WorkTypeHours({
+            value: 0,
+            key: projectTemplate.name,
+            label: projectTemplate.name,
+            required: true
+          });
+          this.workTypeControls.push(work);
+        });
+        this.workTypeFormGroup = this.templateControlService.toFormGroup(this.workTypeControls);
+      })
   }
 
+  onCheck(){
+    this.projectTemplateWorkTypes.forEach((projectTemplateWorkType: ProjectTemplateWorkType) => {
+      console.log(JSON.stringify(this.workTypeFormGroup.value[projectTemplateWorkType.name]));
+    })
+    
+  }
 }
 
 export class UserPercent {

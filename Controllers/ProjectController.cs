@@ -42,5 +42,23 @@ namespace HonestProject.Controllers
 
             return new ObjectResult(templates);
         }
+
+        [HttpGet("GetProjectTemplateWorkItems/{projectTemplateId}")]
+        [Authorize(Roles = "Site Administrator,Manager,Team Leader")]
+        public IActionResult GetProjectTemplateWorkItems(Guid projectTemplateId)
+        {
+            ViewModels.ProjectTemplateWorkType[] workTypes = repository.GetProjectTemplateWorkType(projectTemplateId,this.HttpContext.User.Identity.Name);
+            if(!repository.ValidSubmission)
+            {
+                return NotFound(projectTemplateId);
+            }
+
+            if(repository.ErrorDetected)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return new ObjectResult(workTypes);
+        }
     }
 }

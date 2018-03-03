@@ -117,10 +117,10 @@ namespace HonestProject.Data
             project.WorkTypeItems = new List<ProjectWorkType>();
 
             var projectItems = new ProjectWorkType[] {
-                new ProjectWorkType() {WorkType = workTypes[0], ManHours = 300, PublicIdentifier = Guid.NewGuid()},
-                new ProjectWorkType() {WorkType = workTypes[1], ManHours = 2880, PublicIdentifier = Guid.NewGuid()},
-                new ProjectWorkType() {WorkType = workTypes[2], ManHours = 1440, PublicIdentifier = Guid.NewGuid()},
-                new ProjectWorkType() {WorkType = workTypes[3], ManHours = 60, PublicIdentifier = Guid.NewGuid()}
+                new ProjectWorkType() {Name = "Planning", ManHours = 300, PublicIdentifier = Guid.NewGuid()},
+                new ProjectWorkType() {Name = "Development", ManHours = 2880, PublicIdentifier = Guid.NewGuid()},
+                new ProjectWorkType() {Name = "Testing", ManHours = 1440, PublicIdentifier = Guid.NewGuid()},
+                new ProjectWorkType() {Name = "Deployment", ManHours = 60, PublicIdentifier = Guid.NewGuid()}
             };
 
             foreach (var type in projectItems)

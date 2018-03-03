@@ -38,6 +38,29 @@
     <button mat-button matStepperNext [disabled]="selectedTemplate == null">Next</button>
   </mat-step>
   <mat-step>
+    <ng-template matStepLabel>Set task hours</ng-template>
+    <div>
+      <form [formGroup]="workTypeFormGroup">
+        <div>
+          <table>
+            <tr *ngFor="let workType of workTypeControls">
+              <td>
+                <label>{{workType.key}}:</label>
+              </td>
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="Hours" [formControlName]="workType.key" [id]="workType.key">
+                </mat-form-field>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </form>
+    </div>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext [disabled]="!workTypeFormGroup.valid" (click)="onCheck()">Next</button>
+  </mat-step>
+  <mat-step>
     <ng-template matStepLabel>Assign members</ng-template>
     <div class="add-new-project-template-list">
       <mat-sidenav-container class="add-new-project-sidenav-container">
@@ -47,11 +70,20 @@
           </div>
         </mat-sidenav>
         <mat-sidenav-content>
-          <p>Content goes here</p>
-          <p>Content goes here</p>
-          <p>Content goes here</p>
-          <p>Content goes here</p>
-          <p>Content goes here</p>
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let workType of projectTemplateWorkTypes">
+              <mat-expansion-panel-header>
+                <mat-panel-title class="project-management-panel-header-title">
+                  {{workType.name}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>Content goes here</p>
+              <p>Content goes here</p>
+              <p>Content goes here</p>
+              <p>Content goes here</p>
+              <p>Content goes here</p>
+            </mat-expansion-panel>
+          </mat-accordion>
         </mat-sidenav-content>
       </mat-sidenav-container>
     </div>
