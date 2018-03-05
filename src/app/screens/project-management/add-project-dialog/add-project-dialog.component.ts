@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 import { ProjectWorkTypeControlService } from './services/project-work-type-control.service';
 import { ProjectTemplateWorkType } from '../../../landingPage/models/ProjectTemplateWorkType';
 import { WorkTypeHours } from './models/work-type-hours';
+import { UserTaskPercent } from './models/user-task-percent';
 
 @Component({
   selector: 'app-add-project-dialog',
@@ -23,7 +24,9 @@ export class AddProjectDialogComponent implements OnInit {
   selectedTemplate: ProjectTemplateTopLevel;
   pctUsers: UserPercent[];
   workTypeControls: WorkTypeHours[];
-  projectTemplateWorkTypes: ProjectTemplateWorkType[]
+  projectTemplateWorkTypes: ProjectTemplateWorkType[];
+  users: User[];
+  projectTemplateWorkTypeFormGroups: FormGroup[];
 
 
   constructor(private _formBuilder: FormBuilder,
@@ -45,13 +48,15 @@ export class AddProjectDialogComponent implements OnInit {
       fake: new FormControl()
     });
 
-    console.log(JSON.stringify(this.data.teamId));
+    this.projectTemplateWorkTypeFormGroups = new Array<FormGroup>();
+
     this.projectService.GetProjectTemplateTopLevel()
       .subscribe((templates: ProjectTemplateTopLevel[]) => {
         this.projectTemplates = templates;
       });
     this.userService.GetTeamMembers(this.data.teamId)
       .subscribe((users: User[]) => {
+        this.users = users;
         this.pctUsers = new Array<UserPercent>();
         users.forEach((user: User) => {
           this.pctUsers.push(new UserPercent(user, 0));
@@ -74,13 +79,15 @@ export class AddProjectDialogComponent implements OnInit {
           });
           this.workTypeControls.push(work);
         });
-        this.workTypeFormGroup = this.templateControlService.toFormGroup(this.workTypeControls);
+        this.workTypeFormGroup = this.templateControlService.workTypeHoursToFormGroup(this.workTypeControls);
       })
   }
 
-  onCheck(){
+  onTaskSetupComplete(){
+    this.projectTemplateWorkTypeFormGroups = new Array<FormGroup>();
     this.projectTemplateWorkTypes.forEach((projectTemplateWorkType: ProjectTemplateWorkType) => {
-      console.log(JSON.stringify(this.workTypeFormGroup.value[projectTemplateWorkType.name]));
+      console.log(JSON.stringify(this.workTypeFormGroup.value[projectTemplateWorkType.name])); //KEEP THIS UNTIL READY TO PULL DATA FOR REGISTRATION
+
     })
     
   }
@@ -90,3 +97,5 @@ export class UserPercent {
   constructor(public user: User,
     public pct: number) { }
 }
+
+

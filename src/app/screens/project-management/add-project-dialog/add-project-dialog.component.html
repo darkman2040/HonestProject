@@ -58,35 +58,38 @@
       </form>
     </div>
     <button mat-button matStepperPrevious>Back</button>
-    <button mat-button matStepperNext [disabled]="!workTypeFormGroup.valid" (click)="onCheck()">Next</button>
+    <button mat-button matStepperNext [disabled]="!workTypeFormGroup.valid" (click)="onTaskSetupComplete()">Next</button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Assign members</ng-template>
-    <div class="add-new-project-template-list">
-      <mat-sidenav-container class="add-new-project-sidenav-container">
-        <mat-sidenav mode="side" #timeNav opened position="end">
-          <div *ngFor="let userPct of pctUsers">
-            {{userPct.user.firstName}} {{userPct.pct}}%
-          </div>
-        </mat-sidenav>
-        <mat-sidenav-content>
-          <mat-accordion>
-            <mat-expansion-panel *ngFor="let workType of projectTemplateWorkTypes">
-              <mat-expansion-panel-header>
-                <mat-panel-title class="project-management-panel-header-title">
-                  {{workType.name}}
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <p>Content goes here</p>
-              <p>Content goes here</p>
-              <p>Content goes here</p>
-              <p>Content goes here</p>
-              <p>Content goes here</p>
-            </mat-expansion-panel>
-          </mat-accordion>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
-    </div>
+    <mat-sidenav-container>
+      <mat-sidenav mode="side" #timeNav class="add-new-project-sidenav-bar" opened position="end">
+        <table class="add-new-project-user-table">
+          <tr *ngFor="let userPct of pctUsers">
+            <td>{{userPct.user.firstName}}</td>
+            <td class="add-new-project-pct-justify">{{userPct.pct}}%</td>
+          </tr>
+        </table>
+      </mat-sidenav>
+      <mat-sidenav-content>
+
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let workType of projectTemplateWorkTypes; let index = index" class="add-new-project-workType-pct">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="project-management-panel-header-title">
+                {{workType.name}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="projectTemplateWorkTypeFormGroup[index]">
+              <div *ngFor="">
+                <label></label>
+                <mat-slider thumbLabel tickInterval="1"></mat-slider>
+              </div>
+            </form>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
     <button mat-button matStepperPrevious>Back</button>
     <button mat-button [disabled]="selectedTemplate == null" (click)="onSubmit()">Submit</button>
   </mat-step>

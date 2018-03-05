@@ -34,3 +34,19 @@
   .add-new-project-sidenav-container {
     flex: 1;
   }
+
+  .add-new-project-sidenav-bar{
+    width: 150px;
+  }
+
+  .add-new-project-workType-pct {
+    margin: 5px;
+  }
+
+  .add-new-project-pct-justify {
+    text-align: right
+  }
+
+  .add-new-project-user-table {
+    width: 100%
+  }

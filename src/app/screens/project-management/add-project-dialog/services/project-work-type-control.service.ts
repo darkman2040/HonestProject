@@ -1,12 +1,13 @@
 import { WorkTypeHours } from "../models/work-type-hours";
 import { FormControl, Validators, FormGroup } from "@angular/forms";
 import { Injectable } from "@angular/core";
+import { UserTaskPercent } from "../models/user-task-percent";
 
 @Injectable()
 export class ProjectWorkTypeControlService {
     constructor() { }
 
-    toFormGroup(workTypes: WorkTypeHours[]) {
+    workTypeHoursToFormGroup(workTypes: WorkTypeHours[]) {
         let group: any = {};
 
         workTypes.forEach(workType => {
@@ -14,9 +15,16 @@ export class ProjectWorkTypeControlService {
                 : new FormControl(workType.value || '');
         });
 
-        console.log(JSON.stringify(group));
-
         return new FormGroup(group);
 
+    }
+
+    userTaskPctToFormGroup(userTaskPcts: UserTaskPercent[]){
+        let group: any = {};
+        userTaskPcts.forEach(workType => {
+            group[workType.user.userId] = new FormControl('');
+        });
+
+        return new FormGroup(group);
     }
 }
