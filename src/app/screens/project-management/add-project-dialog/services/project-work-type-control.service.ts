@@ -1,7 +1,10 @@
 import { WorkTypeHours } from "../models/work-type-hours";
 import { FormControl, Validators, FormGroup } from "@angular/forms";
 import { Injectable } from "@angular/core";
-import { UserTaskPercent } from "../models/user-task-percent";
+import { ProjectTemplateWorkType } from "../../../../landingPage/models/ProjectTemplateWorkType";
+import { User } from "../../../../landingPage/models/User";
+import { FormTaskUserPercentage } from "../models/form-task-user-percentage";
+import { SliderControl } from "../models/slider-control";
 
 @Injectable()
 export class ProjectWorkTypeControlService {
@@ -19,12 +22,20 @@ export class ProjectWorkTypeControlService {
 
     }
 
-    userTaskPctToFormGroup(userTaskPcts: UserTaskPercent[]){
-        let group: any = {};
-        userTaskPcts.forEach(workType => {
-            group[workType.user.userId] = new FormControl('');
+    taskTypeAndUserToFormGroups(workTypes: ProjectTemplateWorkType[], users: User[]) : FormTaskUserPercentage[] {
+        let groupList = new Array<FormTaskUserPercentage>();
+        workTypes.forEach((workType: ProjectTemplateWorkType) => {
+            let group: any = {};
+            let controls = new Array<SliderControl>();
+            users.forEach((user: User) => {
+                let control = new FormControl('');
+                controls.push(new SliderControl(user, control));
+                group[user.userId] = control;
+            });
+
+            groupList.push(new FormTaskUserPercentage(workType.name, new FormGroup(group), controls));
         });
 
-        return new FormGroup(group);
+        return groupList;
     }
 }

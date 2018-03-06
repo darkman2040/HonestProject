@@ -9,6 +9,8 @@ import { ProjectWorkTypeControlService } from './services/project-work-type-cont
 import { ProjectTemplateWorkType } from '../../../landingPage/models/ProjectTemplateWorkType';
 import { WorkTypeHours } from './models/work-type-hours';
 import { UserTaskPercent } from './models/user-task-percent';
+import { FormTaskUserPercentage } from './models/form-task-user-percentage';
+import { SliderControl } from './models/slider-control';
 
 @Component({
   selector: 'app-add-project-dialog',
@@ -26,7 +28,8 @@ export class AddProjectDialogComponent implements OnInit {
   workTypeControls: WorkTypeHours[];
   projectTemplateWorkTypes: ProjectTemplateWorkType[];
   users: User[];
-  projectTemplateWorkTypeFormGroups: FormGroup[];
+  projectTemplateWorkTypeFormGroups: FormTaskUserPercentage[];
+  selectedTimeFrame: string;
 
 
   constructor(private _formBuilder: FormBuilder,
@@ -48,7 +51,7 @@ export class AddProjectDialogComponent implements OnInit {
       fake: new FormControl()
     });
 
-    this.projectTemplateWorkTypeFormGroups = new Array<FormGroup>();
+    this.selectedTimeFrame = "days";
 
     this.projectService.GetProjectTemplateTopLevel()
       .subscribe((templates: ProjectTemplateTopLevel[]) => {
@@ -83,12 +86,32 @@ export class AddProjectDialogComponent implements OnInit {
       })
   }
 
-  onTaskSetupComplete(){
-    this.projectTemplateWorkTypeFormGroups = new Array<FormGroup>();
+  onTaskSetupComplete() {
     this.projectTemplateWorkTypes.forEach((projectTemplateWorkType: ProjectTemplateWorkType) => {
       console.log(JSON.stringify(this.workTypeFormGroup.value[projectTemplateWorkType.name])); //KEEP THIS UNTIL READY TO PULL DATA FOR REGISTRATION
+      this.projectTemplateWorkTypeFormGroups = this.templateControlService.taskTypeAndUserToFormGroups(this.projectTemplateWorkTypes, this.users)
 
-    })
+    });
+
+  }
+
+  onSliderChange(formGroup: FormGroup, slider: SliderControl) {
+    console.log(JSON.stringify(formGroup.value[slider.user.userId]));
+    this.computeUserPercent(slider.user);
+  }
+
+  computeUserPercent(user: User) {
+    let pctNumber: number = 0;
+    this.projectTemplateWorkTypeFormGroups.forEach((form: FormTaskUserPercentage) => {
+      pctNumber = pctNumber + form.group.value[user.userId];
+    });
+
+    this.pctUsers.forEach((pct: UserPercent) => {
+      if(pct.user == user)
+      {
+        pct.pct = pctNumber;
+      }
+    });
     
   }
 }

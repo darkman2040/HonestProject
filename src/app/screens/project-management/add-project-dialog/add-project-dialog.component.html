@@ -38,27 +38,41 @@
     <button mat-button matStepperNext [disabled]="selectedTemplate == null">Next</button>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Set task hours</ng-template>
-    <div>
-      <form [formGroup]="workTypeFormGroup">
-        <div>
-          <table>
-            <tr *ngFor="let workType of workTypeControls">
-              <td>
-                <label>{{workType.key}}:</label>
-              </td>
-              <td>
-                <mat-form-field>
-                  <input matInput placeholder="Hours" [formControlName]="workType.key" [id]="workType.key">
-                </mat-form-field>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </form>
-    </div>
-    <button mat-button matStepperPrevious>Back</button>
-    <button mat-button matStepperNext [disabled]="!workTypeFormGroup.valid" (click)="onTaskSetupComplete()">Next</button>
+    <ng-template matStepLabel>Set task times</ng-template>
+    <mat-radio-group class="add-new-project-radio-group" [(ngModel)]="selectedTimeFrame">
+      <mat-radio-button class="add-new-project-radio-button" value="hours">
+        Hours
+      </mat-radio-button>
+      <mat-radio-button class="add-new-project-radio-button" value="days">
+        Days
+      </mat-radio-button>
+      <mat-radio-button class="add-new-project-radio-button" value="weeks">
+        Weeks
+      </mat-radio-button>
+      <mat-radio-button class="add-new-project-radio-button" value="months">
+        Months
+      </mat-radio-button>
+      </mat-radio-group>
+      <div>
+        <form [formGroup]="workTypeFormGroup">
+          <div>
+            <table>
+              <tr *ngFor="let workType of workTypeControls">
+                <td>
+                  <label>{{workType.key}}:</label>
+                </td>
+                <td>
+                  <mat-form-field>
+                    <input matInput placeholder="time" [formControlName]="workType.key" [id]="workType.key">
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </form>
+      </div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext [disabled]="!workTypeFormGroup.valid" (click)="onTaskSetupComplete()">Next</button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Assign members</ng-template>
@@ -71,21 +85,27 @@
           </tr>
         </table>
       </mat-sidenav>
-      <mat-sidenav-content>
-
+      <mat-sidenav-content >
         <mat-accordion>
-          <mat-expansion-panel *ngFor="let workType of projectTemplateWorkTypes; let index = index" class="add-new-project-workType-pct">
+          <mat-expansion-panel *ngFor="let workType of projectTemplateWorkTypeFormGroups; let index = index" class="add-new-project-workType-pct">
             <mat-expansion-panel-header>
               <mat-panel-title class="project-management-panel-header-title">
-                {{workType.name}}
+                {{workType.workName}}
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <form [formGroup]="projectTemplateWorkTypeFormGroup[index]">
-              <div *ngFor="">
-                <label></label>
-                <mat-slider thumbLabel tickInterval="1"></mat-slider>
-              </div>
+            <form [formGroup]="workType.group">
+              <table>
+                <tr *ngFor="let slider of workType.sliderControls">
+                  <td>
+                    <label>{{slider.user.firstName}} {{slider.user.lastName}}</label>
+                  </td>
+                  <td>
+                    <mat-slider [formControlName]="slider.user.userId" thumbLabel (change)="onSliderChange(workType.group, slider)" tickInterval="1"></mat-slider>
+                  </td>
+                </tr>
+              </table>
             </form>
+            <p>Form value: {{ workType.group.value | json }}</p>
           </mat-expansion-panel>
         </mat-accordion>
       </mat-sidenav-content>
