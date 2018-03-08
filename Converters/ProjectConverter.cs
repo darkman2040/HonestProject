@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HonestProject.DataModels;
+using HonestProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace HonestProject.Converters
@@ -13,11 +14,45 @@ namespace HonestProject.Converters
             this.context = context;
         }
 
+        public DataModels.Project ConvertNewProjectToDbProject(ViewModels.RegisterProject newProject, DataModels.Team owner)
+        {
+            DataModels.Project dbProject = new DataModels.Project();
+            dbProject.PublicIdentifier = new System.Guid();
+            dbProject.Name = newProject.Name;
+            dbProject.Description = newProject.Description;
+            dbProject.Color = newProject.Color;
+            dbProject.PercentageEstimate = newProject.PercentageEstimate;
+            dbProject.StartDate = newProject.StartDate;
+            dbProject.OwningTeam = owner;
+            dbProject.WorkTypeItems = new List<DataModels.ProjectWorkType>();
+            foreach(ViewModels.RegisterProjectWorkType workType in newProject.WorkTypeItems)
+            {
+                DataModels.ProjectWorkType projectType = new DataModels.ProjectWorkType();
+                projectType.Name = workType.Name;
+                projectType.PublicIdentifier = new System.Guid();
+                projectType.ManHours = workType.ManHours;
+                projectType.TimePctWorkItems = new List<DataModels.TimePercentageUserProjectWorkType>();
+                foreach(ViewModels.RegisterProjectTimePct timePct in workType.TimePctWorkItems)
+                {
+                    DataModels.TimePercentageUserProjectWorkType dbTimePct = new DataModels.TimePercentageUserProjectWorkType();
+                    dbTimePct.PublicIdentifier = new System.Guid();
+                    dbTimePct.WorkPercentage = timePct.WorkPercentage;
+                    DataModels.User user = this.context.User.Where(x => x.PublicIdentifier == timePct.UserId).FirstOrDefault();
+                    projectType.TimePctWorkItems.Add(dbTimePct);
+                }
+                dbProject.WorkTypeItems.Add(projectType);
+            }
+
+            return dbProject;
+        }
+
         public ViewModels.Project ConvertToViewProject(DataModels.Project project)
         {
             DataModels.Project dbProject = this.context.Project
             .Include(x => x.OwningTeam)
             .Include(x => x.WorkTypeItems)
+            .ThenInclude(x => x.TimePctWorkItems)
+            .ThenInclude(x => x.User)
             .FirstOrDefault();
 
             ViewModels.Project viewProject = new ViewModels.Project();
@@ -37,13 +72,8 @@ namespace HonestProject.Converters
                 viewWorkType.ManHours = workType.ManHours;
 
                 List<ViewModels.TimePercentageUserProjectWorkType> viewElements = new List<ViewModels.TimePercentageUserProjectWorkType>();
-
-                List<DataModels.TimePercentageUserProjectWorkType> timeElements = this.context.TimePercentageUserProjectWorkType
-                .Include(x => x.ProjectWorkType)
-                .Include(x => x.User)
-                .Where(x => x.ProjectWorkType.ID == workType.ID).ToList();
                 
-                foreach(var timeUnit in timeElements)
+                foreach(var timeUnit in workType.TimePctWorkItems)
                 {
                     ViewModels.TimePercentageUserProjectWorkType viewElement = new ViewModels.TimePercentageUserProjectWorkType();
                     viewElement.Id = timeUnit.PublicIdentifier;

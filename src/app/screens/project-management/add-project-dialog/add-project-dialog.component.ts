@@ -30,6 +30,8 @@ export class AddProjectDialogComponent implements OnInit {
   users: User[];
   projectTemplateWorkTypeFormGroups: FormTaskUserPercentage[];
   selectedTimeFrame: string;
+  projectColor: string;
+  colors: any;
 
 
   constructor(private _formBuilder: FormBuilder,
@@ -37,6 +39,22 @@ export class AddProjectDialogComponent implements OnInit {
     private userService: UserService,
     private templateControlService: ProjectWorkTypeControlService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.colors = [
+        {color: 'Green'},
+        {color: 'Blue'},
+        {color: 'Orange'},
+        {color: 'Red'},
+        {color: 'Yellow'},
+        {color: 'Purple'},
+        {color: 'Pink'},
+        {color: 'Brown'},
+        {color: 'Black'},
+        {color: 'Aqua'},
+        {color: 'royalblue'},
+        {color: 'teal'},
+        {color: 'yeallowgreen'}
+      ]
+
   }
 
   ngOnInit() {
@@ -52,6 +70,7 @@ export class AddProjectDialogComponent implements OnInit {
     });
 
     this.selectedTimeFrame = "days";
+    this.projectColor = "black";
 
     this.projectService.GetProjectTemplateTopLevel()
       .subscribe((templates: ProjectTemplateTopLevel[]) => {
@@ -100,6 +119,10 @@ export class AddProjectDialogComponent implements OnInit {
     this.computeUserPercent(slider.user);
   }
 
+  onColorClick(color: string){
+    this.projectColor = color;
+  }
+
   computeUserPercent(user: User) {
     let pctNumber: number = 0;
     this.projectTemplateWorkTypeFormGroups.forEach((form: FormTaskUserPercentage) => {
@@ -119,6 +142,10 @@ export class AddProjectDialogComponent implements OnInit {
 export class UserPercent {
   constructor(public user: User,
     public pct: number) { }
+}
+
+export class ColorList {
+
 }
 
 

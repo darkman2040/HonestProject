@@ -15,10 +15,30 @@
   </mat-step>
   <mat-step [stepControl]="secondFormGroup">
     <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Describe Project</ng-template>
-      <mat-form-field class="add-new-project-description">
-        <textarea matInput placeholder="A brief description of the project" formControlName="secondCtrl" required></textarea>
-      </mat-form-field>
+      <ng-template matStepLabel>Project Details</ng-template>
+      <div class="add-new-project-details-container">
+        <mat-form-field class="add-new-project-description">
+          <textarea matInput placeholder="A brief description of the project" formControlName="secondCtrl" required></textarea>
+        </mat-form-field>
+        <mat-form-field class="add-new-project-details-field">
+          <input matInput [matDatepicker]="picker" placeholder="Date project start">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="add-new-project-details-field">
+          <input matInput placeholder="Percent team time" required>
+          <span matSuffix>%</span>
+        </mat-form-field>
+        <div>
+          Choose a Color:
+          <button mat-mini-fab [ngStyle]="{'background-color' : projectColor}"></button>
+        </div>
+        <mat-grid-list cols="3" rowHeight="50" class="add-new-project-details-field">
+          <mat-grid-tile *ngFor="let color of colors">
+            <button mat-mini-fab [ngStyle]="{'background-color' : color.color}" (click)="onColorClick(color.color)"></button>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext [disabled]="!secondFormGroup.valid">Next</button>
@@ -39,7 +59,9 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Set task times</ng-template>
+
     <mat-radio-group class="add-new-project-radio-group" [(ngModel)]="selectedTimeFrame">
+      Choose units of time (ex. man hours):
       <mat-radio-button class="add-new-project-radio-button" value="hours">
         Hours
       </mat-radio-button>
@@ -52,31 +74,31 @@
       <mat-radio-button class="add-new-project-radio-button" value="months">
         Months
       </mat-radio-button>
-      </mat-radio-group>
-      <div>
-        <form [formGroup]="workTypeFormGroup">
-          <div>
-            <table>
-              <tr *ngFor="let workType of workTypeControls">
-                <td>
-                  <label>{{workType.key}}:</label>
-                </td>
-                <td>
-                  <mat-form-field>
-                    <input matInput placeholder="time" [formControlName]="workType.key" [id]="workType.key">
-                  </mat-form-field>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </form>
-      </div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button matStepperNext [disabled]="!workTypeFormGroup.valid" (click)="onTaskSetupComplete()">Next</button>
+    </mat-radio-group>
+    <div>
+      <form [formGroup]="workTypeFormGroup">
+        <div>
+          <table>
+            <tr *ngFor="let workType of workTypeControls">
+              <td>
+                <label>{{workType.key}}:</label>
+              </td>
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="time" [formControlName]="workType.key" [id]="workType.key">
+                </mat-form-field>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </form>
+    </div>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext [disabled]="!workTypeFormGroup.valid" (click)="onTaskSetupComplete()">Next</button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Assign members</ng-template>
-    <mat-sidenav-container>
+    <mat-sidenav-container >
       <mat-sidenav mode="side" #timeNav class="add-new-project-sidenav-bar" opened position="end">
         <table class="add-new-project-user-table">
           <tr *ngFor="let userPct of pctUsers">
@@ -85,7 +107,7 @@
           </tr>
         </table>
       </mat-sidenav>
-      <mat-sidenav-content >
+      <mat-sidenav-content class="add-new-project-work-pct-container">
         <mat-accordion>
           <mat-expansion-panel *ngFor="let workType of projectTemplateWorkTypeFormGroups; let index = index" class="add-new-project-workType-pct">
             <mat-expansion-panel-header>

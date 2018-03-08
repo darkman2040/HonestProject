@@ -50,3 +50,27 @@
   .add-new-project-user-table {
     width: 100%
   }
+
+  .add-new-project-details-container {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    padding: 5px;
+    height: 250px;
+    overflow-y: auto;
+  }
+
+  .add-new-project-details-field {
+    max-width: 200px;
+  }
+
+  .add-new-project-work-pct {
+    max-width: 400px;
+  }
+
+  .add-new-project-work-pct-container {
+    display: flex;
+    flex-direction: column;
+    height: 250px;
+    overflow-y: auto;
+  }

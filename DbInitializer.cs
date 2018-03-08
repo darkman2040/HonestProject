@@ -128,38 +128,37 @@ namespace HonestProject.Data
                 project.WorkTypeItems.Add(type);
             }
 
+            var projectType = projectItems[0];
+            projectType.TimePctWorkItems = new List<TimePercentageUserProjectWorkType>();
+            //Planning
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[5], WorkPercentage = 75, PublicIdentifier = Guid.NewGuid() });
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[4], WorkPercentage = 25, PublicIdentifier = Guid.NewGuid() });
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[0], WorkPercentage = 15, PublicIdentifier = Guid.NewGuid() });
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[1], WorkPercentage = 15, PublicIdentifier = Guid.NewGuid() });
+
+            projectType = projectItems[1];
+            projectType.TimePctWorkItems = new List<TimePercentageUserProjectWorkType>();
+            //Development
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[0], WorkPercentage = 75, PublicIdentifier = Guid.NewGuid() });
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[1], WorkPercentage = 75, PublicIdentifier = Guid.NewGuid() });
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[2], WorkPercentage = 95, PublicIdentifier = Guid.NewGuid() });
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[3], WorkPercentage = 95, PublicIdentifier = Guid.NewGuid() });
+
+            projectType = projectItems[2];
+            projectType.TimePctWorkItems = new List<TimePercentageUserProjectWorkType>();
+            //Testing
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[5], WorkPercentage = 25, PublicIdentifier = Guid.NewGuid() });
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[4], WorkPercentage = 75, PublicIdentifier = Guid.NewGuid() });
+
+            projectType = projectItems[3];
+            projectType.TimePctWorkItems = new List<TimePercentageUserProjectWorkType>();
+            //Deployment
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[0], WorkPercentage = 10, PublicIdentifier = Guid.NewGuid() });
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[1], WorkPercentage = 10, PublicIdentifier = Guid.NewGuid() });
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[2], WorkPercentage = 5, PublicIdentifier = Guid.NewGuid() });
+            projectType.TimePctWorkItems.Add(new TimePercentageUserProjectWorkType() { User = users[3], WorkPercentage = 5, PublicIdentifier = Guid.NewGuid() });
+        
             context.Project.Add(project);
-            context.SaveChanges();
-
-
-            var timePct = new TimePercentageUserProjectWorkType[] {
-                //Planning
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], User = users[5], WorkPercentage = 75, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], User = users[4], WorkPercentage = 25, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], User = users[0], WorkPercentage = 15, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[0], User = users[1], WorkPercentage = 15, PublicIdentifier=Guid.NewGuid()},
-
-                //Development
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[0], WorkPercentage = 75, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[1], WorkPercentage = 75, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[2], WorkPercentage = 95, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[1], User = users[3], WorkPercentage = 95, PublicIdentifier=Guid.NewGuid()},
-
-                //Testing
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[2], User = users[5], WorkPercentage = 25, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[2], User = users[4], WorkPercentage = 75, PublicIdentifier=Guid.NewGuid()},
-
-                //Deployment
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[3], User = users[0], WorkPercentage = 10, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[3], User = users[1], WorkPercentage = 10, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[3], User = users[2], WorkPercentage = 5, PublicIdentifier=Guid.NewGuid()},
-                new TimePercentageUserProjectWorkType() {ProjectWorkType = projectItems[3], User = users[3], WorkPercentage = 5, PublicIdentifier=Guid.NewGuid()},
-            };
-
-            foreach (var time in timePct)
-            {
-                context.TimePercentageUserProjectWorkType.Add(time);
-            }
 
             context.SaveChanges();
 

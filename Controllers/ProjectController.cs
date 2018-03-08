@@ -60,5 +60,11 @@ namespace HonestProject.Controllers
 
             return new ObjectResult(workTypes);
         }
+        [HttpPost]
+        [Authorize(Roles = "Site Administrator,Manager,Team Leader")]
+        public IActionResult RegisterNewProject()
+        {
+            
+        }
     }
 }

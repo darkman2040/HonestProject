@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Project } from '../models/Project'
 import { ProjectTemplateTopLevel } from '../models/ProjectTemplateTopLevel';
 import { ProjectTemplateWorkType } from '../models/ProjectTemplateWorkType';
+import { RegisterProject } from '../models/RegisterProject';
 
 @Injectable()
 export class ProjectService {
@@ -21,5 +22,9 @@ export class ProjectService {
 
     public GetProjectTemplateWorkTypes(projectTemplateId: string): Observable<ProjectTemplateWorkType[]> {
         return this.http.get<ProjectTemplateWorkType[]>('api/project/GetProjectTemplateWorkItems/' + projectTemplateId);
+    }
+
+    public RegisterNewProject(project: RegisterProject) {
+        return this.http.post<Project[]>('api/project/', project);
     }
 }

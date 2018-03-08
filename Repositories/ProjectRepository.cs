@@ -86,5 +86,99 @@ namespace HonestProject.Repositories
 
             return list.ToArray();
         }
+
+        public ViewModels.Project RegisterNewProject(RegisterProject newProject)
+        {
+            if(!ValidateNewProject(newProject))
+            {
+                this.ValidationFailed();
+                return null;
+            }
+
+            
+        }
+
+        private bool ValidateNewProject(RegisterProject newProject)
+        {
+            if(String.IsNullOrEmpty(newProject.Name))
+            {
+                return false;
+            }
+
+            if(String.IsNullOrEmpty(newProject.Description))
+            {
+                return false;
+            }
+
+            if(String.IsNullOrEmpty(newProject.Color))
+            {
+                return false;
+            }
+
+            if(newProject.PercentageEstimate <= 0)
+            {
+                return false;
+            }
+            
+            if(newProject.StartDate == null)
+            {
+                return false;
+            }
+
+            if(newProject.WorkTypeItems == null || newProject.WorkTypeItems.Count() <= 0)
+            {
+                return false;
+            }
+
+            return ValidateWorkTypes(newProject.WorkTypeItems);
+        }
+
+        private bool ValidateWorkTypes(RegisterProjectWorkType[] workTypeItems)
+        {
+            foreach(RegisterProjectWorkType workType in workTypeItems)
+            {
+                if(String.IsNullOrEmpty(workType.Name))
+                {
+                    return false;
+                }
+
+                if(workType.ManHours <= 0)
+                {
+                    return false;
+                }
+
+                bool validatePct = ValidatePctItems(workType.TimePctWorkItems);
+                if(!validatePct)
+                {
+                    return false;
+                }   
+            }
+
+            return true;
+        }
+
+        private bool ValidatePctItems(RegisterProjectTimePct[] timePctWorkItems)
+        {
+            foreach(RegisterProjectTimePct pct in timePctWorkItems)
+            {
+                if(pct.WorkPercentage <= 0)
+                {
+                    return false;
+                }
+
+                if(pct.UserId == null)
+                {
+                    return false;
+                }
+
+                DataModels.User user = this.context.User.Where(x => x.PublicIdentifier == pct.UserId).FirstOrDefault();
+                if(user == null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

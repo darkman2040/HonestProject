@@ -8,9 +8,9 @@ namespace HonestProject.DataModels
         [Required]
         public int ID {get; set;}
         [Required]
-        public User User {get; set;}
-        [Required]
         public ProjectWorkType ProjectWorkType {get; set;}
+        [Required]
+        public User User {get; set;}
         [Required]
         public int WorkPercentage {get; set;}
         [Required]

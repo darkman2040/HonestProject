@@ -1,4 +1,5 @@
 using System;
+using HonestProject.ViewModels;
 
 namespace HonestProject.Repositories {
     public interface IProjectRepository : IBasicRepository
@@ -7,5 +8,6 @@ namespace HonestProject.Repositories {
          ViewModels.ProjectTemplateTopLevel[] GetProjectTemplates(string userId);
 
          ViewModels.ProjectTemplateWorkType[] GetProjectTemplateWorkType(Guid projectId, string userId);
+         ViewModels.Project RegisterNewProject(RegisterProject newProject);
     }
 }
