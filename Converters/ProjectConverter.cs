@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HonestProject.DataModels;
@@ -17,7 +18,7 @@ namespace HonestProject.Converters
         public DataModels.Project ConvertNewProjectToDbProject(ViewModels.RegisterProject newProject, DataModels.Team owner)
         {
             DataModels.Project dbProject = new DataModels.Project();
-            dbProject.PublicIdentifier = new System.Guid();
+            dbProject.PublicIdentifier = Guid.NewGuid();
             dbProject.Name = newProject.Name;
             dbProject.Description = newProject.Description;
             dbProject.Color = newProject.Color;
@@ -29,15 +30,16 @@ namespace HonestProject.Converters
             {
                 DataModels.ProjectWorkType projectType = new DataModels.ProjectWorkType();
                 projectType.Name = workType.Name;
-                projectType.PublicIdentifier = new System.Guid();
+                projectType.PublicIdentifier = Guid.NewGuid();
                 projectType.ManHours = workType.ManHours;
                 projectType.TimePctWorkItems = new List<DataModels.TimePercentageUserProjectWorkType>();
                 foreach(ViewModels.RegisterProjectTimePct timePct in workType.TimePctWorkItems)
                 {
                     DataModels.TimePercentageUserProjectWorkType dbTimePct = new DataModels.TimePercentageUserProjectWorkType();
-                    dbTimePct.PublicIdentifier = new System.Guid();
+                    dbTimePct.PublicIdentifier = Guid.NewGuid();
                     dbTimePct.WorkPercentage = timePct.WorkPercentage;
                     DataModels.User user = this.context.User.Where(x => x.PublicIdentifier == timePct.UserId).FirstOrDefault();
+                    dbTimePct.User = user;
                     projectType.TimePctWorkItems.Add(dbTimePct);
                 }
                 dbProject.WorkTypeItems.Add(projectType);
@@ -53,6 +55,7 @@ namespace HonestProject.Converters
             .Include(x => x.WorkTypeItems)
             .ThenInclude(x => x.TimePctWorkItems)
             .ThenInclude(x => x.User)
+            .Where(x => x.ID == project.ID)
             .FirstOrDefault();
 
             ViewModels.Project viewProject = new ViewModels.Project();

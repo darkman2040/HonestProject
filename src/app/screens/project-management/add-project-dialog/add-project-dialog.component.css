@@ -71,6 +71,6 @@
   .add-new-project-work-pct-container {
     display: flex;
     flex-direction: column;
-    height: 250px;
+    max-height: 400px;
     overflow-y: auto;
   }

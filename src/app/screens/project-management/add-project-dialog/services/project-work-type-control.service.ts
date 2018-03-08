@@ -5,6 +5,8 @@ import { ProjectTemplateWorkType } from "../../../../landingPage/models/ProjectT
 import { User } from "../../../../landingPage/models/User";
 import { FormTaskUserPercentage } from "../models/form-task-user-percentage";
 import { SliderControl } from "../models/slider-control";
+import { NumberValidator } from "../../../../landingPage/validators/NumberValidator";
+import { PctTextBoxControl } from "../models/pct-textbox-control";
 
 @Injectable()
 export class ProjectWorkTypeControlService {
@@ -14,8 +16,7 @@ export class ProjectWorkTypeControlService {
         let group: any = {};
 
         workTypes.forEach(workType => {
-            group[workType.key] = workType.required ? new FormControl(workType.value || '', Validators.required)
-                : new FormControl(workType.value || '');
+            group[workType.key] = new FormControl(workType.value || '', [Validators.required, Validators.min(1), NumberValidator]);
         });
 
         return new FormGroup(group);
@@ -26,14 +27,18 @@ export class ProjectWorkTypeControlService {
         let groupList = new Array<FormTaskUserPercentage>();
         workTypes.forEach((workType: ProjectTemplateWorkType) => {
             let group: any = {};
-            let controls = new Array<SliderControl>();
+            let sliderControls = new Array<SliderControl>();
+            let textboxControls = new Array<PctTextBoxControl>();
             users.forEach((user: User) => {
                 let control = new FormControl('');
-                controls.push(new SliderControl(user, control));
+                let textControl = new FormControl('0', [Validators.required, Validators.min(0), Validators.max(100), NumberValidator])
+                sliderControls.push(new SliderControl(user, control));
+                textboxControls.push(new PctTextBoxControl(user, textControl));
                 group[user.userId] = control;
+                group[user.userId + 'text'] = textControl;
             });
 
-            groupList.push(new FormTaskUserPercentage(workType.name, new FormGroup(group), controls));
+            groupList.push(new FormTaskUserPercentage(workType.name, new FormGroup(group), sliderControls, textboxControls));
         });
 
         return groupList;

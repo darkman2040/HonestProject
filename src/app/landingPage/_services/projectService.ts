@@ -25,6 +25,6 @@ export class ProjectService {
     }
 
     public RegisterNewProject(project: RegisterProject) {
-        return this.http.post<Project[]>('api/project/', project);
+        return this.http.post<Project>('api/project/', project);
     }
 }

@@ -8,6 +8,6 @@ namespace HonestProject.Repositories {
          ViewModels.ProjectTemplateTopLevel[] GetProjectTemplates(string userId);
 
          ViewModels.ProjectTemplateWorkType[] GetProjectTemplateWorkType(Guid projectId, string userId);
-         ViewModels.Project RegisterNewProject(RegisterProject newProject);
+         ViewModels.Project RegisterNewProject(RegisterProject newProject, string userId);
     }
 }

@@ -87,7 +87,7 @@ namespace HonestProject.Repositories
             return list.ToArray();
         }
 
-        public ViewModels.Project RegisterNewProject(RegisterProject newProject)
+        public ViewModels.Project RegisterNewProject(RegisterProject newProject, string userId)
         {
             if(!ValidateNewProject(newProject))
             {
@@ -95,7 +95,44 @@ namespace HonestProject.Repositories
                 return null;
             }
 
+            DataModels.Team team = GetTeamToAssignToProject(newProject, userId);
+            if(team == null)
+            {
+                this.ValidationFailed();
+                return null;
+            }
+
+            DataModels.Project dbProject = converter.ConvertNewProjectToDbProject(newProject, team);
+
+            try
+            {
+            this.context.Project.Add(dbProject);
+            this.context.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                this.SetError(e.Message);
+                return null;
+            }
+
+            ViewModels.Project viewProject = this.converter.ConvertToViewProject(dbProject);
+            return viewProject;
+
             
+        }
+
+        private DataModels.Team GetTeamToAssignToProject(RegisterProject newProject, string userId)
+        {
+            DataModels.User user = this.context.User
+            .Include(x => x.Role)
+            .Where(x => x.EmailAddress == userId).FirstOrDefault();
+            if(user.Role.ID == Const.RoleConst.TEAM_LEADER_ID)
+            {
+                DataModels.Team team = this.context.Team.Where(x => x.TeamLeader == user).FirstOrDefault();
+                return team;
+            }
+
+            return null;
         }
 
         private bool ValidateNewProject(RegisterProject newProject)

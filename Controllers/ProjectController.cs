@@ -62,9 +62,20 @@ namespace HonestProject.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Site Administrator,Manager,Team Leader")]
-        public IActionResult RegisterNewProject()
+        public IActionResult RegisterNewProject([FromBody]ViewModels.RegisterProject newProject)
         {
-            
+            ViewModels.Project project = repository.RegisterNewProject(newProject, this.HttpContext.User.Identity.Name);
+            if(!repository.ValidSubmission)
+            {
+                return NotFound(newProject);
+            }
+
+            if(repository.ErrorDetected)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return new ObjectResult(project);
         }
     }
 }
